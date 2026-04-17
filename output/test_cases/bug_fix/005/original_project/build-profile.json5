@@ -5,7 +5,8 @@
       {
         "name": "default",
         "signingConfig": "default",
-        "compatibleSdkVersion": "5.0.0(12)",
+        "targetSdkVersion": "6.0.2(22)",
+        "compatibleSdkVersion": "6.0.2(22)",
         "runtimeOS": "HarmonyOS",
         "buildOption": {
           "strictMode": {
@@ -36,30 +37,6 @@
           ]
         }
       ]
-    },
-    {
-      "name": "commonLib",
-      "srcPath": "./commons/commonLib",
-    },
-    {
-      "name": "componentLib",
-      "srcPath": "./commons/componentLib",
-    },
-    {
-      "name": "network",
-      "srcPath": "./commons/network",
-    },
-    {
-      "name": "mine",
-      "srcPath": "./features/mine",
-    },
-    {
-      "name": "home",
-      "srcPath": "./features/home",
-    },
-    {
-      "name": "video",
-      "srcPath": "./features/video",
     }
   ]
 }

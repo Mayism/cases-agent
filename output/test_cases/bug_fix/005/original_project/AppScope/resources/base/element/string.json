@@ -2,15 +2,7 @@
   "string": [
     {
       "name": "app_name",
-      "value": "News"
-    },
-    {
-      "name": "agcit_huawei_news",
-      "value": "1.0.1"
-    },
-    {
-      "name": "agcittype_huawei_news",
-      "value": "industryTemplate"
+      "value": "empty_hos_project"
     }
   ]
 }

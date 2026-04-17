@@ -506,6 +506,7 @@ bug_fix:
               - type: call
                 name: animateTo
             llm: 检查状态切换是否使用动画过渡提供视觉反馈
+    starter_kind: bug_fix_toggle_delayed_state
 
 full_generation:
   - seed_id: proj_gen_food_restaurant_mgmt

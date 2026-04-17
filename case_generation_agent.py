@@ -10,7 +10,8 @@ import yaml
 BASE_DIR = Path(__file__).resolve().parent
 SEED_CATALOG_PATH = BASE_DIR / "data" / "seeds" / "seed_catalogs.yaml"
 TEMPLATES_DIR = BASE_DIR / "resources" / "templates"
-EMPTY_PROJECT_DIR = BASE_DIR / "resources" / "starter_projects" / "empty_hos_project"
+STARTER_PROJECTS_DIR = BASE_DIR / "resources" / "starter_projects"
+EMPTY_PROJECT_DIR = STARTER_PROJECTS_DIR / "empty_hos_project"
 OUTPUT_BASE_DIR = BASE_DIR / "output" / "test_cases"
 
 SCENARIO_PREFIX_MAP = {
@@ -71,6 +72,24 @@ def resolve_template_project(template_project: str | None) -> Path | None:
     return None
 
 
+def resolve_starter_project(starter_kind: str | None) -> Path | None:
+    """解析 starter_kind 对应的起始工程目录"""
+    if not starter_kind or not isinstance(starter_kind, str):
+        return None
+
+    value = starter_kind.strip()
+    if not value:
+        return None
+
+    starter_path = STARTER_PROJECTS_DIR / value
+    if starter_path.is_dir():
+        project_root = find_harmonyos_project_root(starter_path)
+        if project_root:
+            return project_root
+
+    return None
+
+
 def find_harmonyos_project_root(template_dir: Path | None) -> Path | None:
     if not template_dir or not template_dir.is_dir():
         return None
@@ -89,12 +108,19 @@ def find_harmonyos_project_root(template_dir: Path | None) -> Path | None:
 
 
 def resolve_source_dir(seed: dict) -> Path:
+    # 优先检查 template_project
     template_path = resolve_template_project(seed.get("template_project"))
     if template_path:
         project_root = find_harmonyos_project_root(template_path)
         if project_root:
             return project_root
 
+    # 其次检查 starter_kind（用于 bug_fix 场景的预置缺陷工程）
+    starter_path = resolve_starter_project(seed.get("starter_kind"))
+    if starter_path:
+        return starter_path
+
+    # 最后使用空工程
     if EMPTY_PROJECT_DIR.is_dir():
         return EMPTY_PROJECT_DIR
 
@@ -124,11 +150,14 @@ def format_rules(constraint: dict) -> list[dict]:
     return formatted
 
 
-def build_bug_fix_prompt(seed: dict, has_template: bool) -> str:
+def build_bug_fix_prompt(seed: dict, has_template: bool, has_starter: bool) -> str:
+    """构建 bug_fix 场景的 prompt"""
     base_prompt = str(seed.get("input", "")).strip()
-    if has_template:
+    # 如果有模板或 starter_project，直接返回原始 prompt
+    if has_template or has_starter:
         return base_prompt
 
+    # 否则添加构造场景的提示
     problem_statement = str(seed.get("problem_statement", "")).strip()
     fix_targets = seed.get("fix_targets")
     fix_lines = []
@@ -145,9 +174,10 @@ def build_bug_fix_prompt(seed: dict, has_template: bool) -> str:
     return "\n".join(parts)
 
 
-def build_output_requirements(seed: dict, scenario: str, has_template: bool) -> str:
+def build_output_requirements(seed: dict, scenario: str, has_template: bool, has_starter: bool) -> str:
+    """构建输出要求"""
     if scenario == "bug_fix":
-        if has_template:
+        if has_template or has_starter:
             return "请基于 original_project 修复缺陷，并说明根因、修复点和修改文件。"
         return "请先在 original_project 中构造原始缺陷场景和原始代码，再基于该 original_project 完成修复，并说明场景构造方式、根因、修复点和修改文件。"
 
@@ -188,10 +218,13 @@ def build_case_content(seed: dict, scenario: str, case_num: str) -> dict:
     if not formatted_constraints:
         raise ValueError(f"seed {seed.get('seed_id', 'unknown')} 没有可用约束。")
 
+    # 检查是否有模板或 starter_project
     has_template = bool(resolve_template_project(seed.get("template_project")))
+    has_starter = bool(resolve_starter_project(seed.get("starter_kind")))
+
     prompt = seed.get("input", "")
     if scenario == "bug_fix":
-        prompt = build_bug_fix_prompt(seed, has_template)
+        prompt = build_bug_fix_prompt(seed, has_template, has_starter)
 
     return {
         "case": {
@@ -199,7 +232,7 @@ def build_case_content(seed: dict, scenario: str, case_num: str) -> dict:
             "scenario": scenario,
             "title": seed.get("title", ""),
             "prompt": prompt,
-            "output_requirements": build_output_requirements(seed, scenario, has_template),
+            "output_requirements": build_output_requirements(seed, scenario, has_template, has_starter),
         },
         "constraints": formatted_constraints,
     }

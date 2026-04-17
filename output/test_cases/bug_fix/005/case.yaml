@@ -1,29 +1,41 @@
 case:
   id: bug_fix_005
   scenario: bug_fix
-  title: 修复新闻详情页图片加载失败无兜底缺陷
-  prompt: 这是一个缺陷修复任务。修复新闻详情页中图片加载失败没有兜底的问题。当前新闻详情页中的图片直接依赖在线图片地址，当网络异常时出现空白区域，没有任何失败反馈。。请修复缺陷，保持现有业务结构稳定。
-  output_requirements: 请直接在当前工程中修改代码并修复缺陷，工程需可编译，并在回复中说明根因、修复点和修改文件。
+  title: 修复Toggle组件点击后立即状态变更无法撤销的缺陷
+  prompt: 修复设置页面中Toggle开关点击后立即生效、无法延迟确认或撤销的问题。参照官方FAQ指导，实现点击后延迟改变状态的交互机制。
+  output_requirements: 请基于 original_project 修复缺陷，并说明根因、修复点和修改文件。
 constraints:
-  - id: HM-BUGFIX-005-01
-    name: 需要处理图片加载失败回调，提供onError处理
-    description: 需要处理图片加载失败回调，提供onError处理
-    priority: P0
-    rules:
-      - target: '**/pages/*.ets'
-        ast:
-          - type: call
-            name: Image
-          - type: property_access
-            name: onError
-        llm: 检查Image组件是否正确处理了onError回调
-  - id: HM-BUGFIX-005-02
-    name: 失败时仍应保留正文内容和其他交互元素
-    description: 失败时仍应保留正文内容和其他交互元素
-    priority: P1
-    rules:
-      - target: '**/pages/*.ets'
-        ast:
-          - type: call
-            name: Text
-        llm: 检查图片加载失败时，正文内容和其他交互元素是否正常显示
+- id: HM-BUGFIX-005-01
+  name: Toggle状态变更必须延迟执行，而非立即响应
+  priority: P0
+  rules:
+  - target: '**/pages/*.ets'
+    ast:
+    - type: call
+      name: Toggle
+    - type: property_access
+      name: onChange
+    llm: 检查Toggle的onChange回调是否延迟执行状态更新，而非直接赋值
+  description: Toggle状态变更必须延迟执行，而非立即响应
+- id: HM-BUGFIX-005-02
+  name: 延迟期间必须提供取消或确认的交互机制
+  priority: P1
+  rules:
+  - target: '**/pages/*.ets'
+    ast:
+    - type: call
+      name: Button
+    - type: call
+      name: AlertDialog
+    llm: 检查是否提供确认对话框或取消按钮等交互入口
+  description: 延迟期间必须提供取消或确认的交互机制
+- id: HM-BUGFIX-005-03
+  name: 状态切换前应提供视觉过渡反馈
+  priority: P1
+  rules:
+  - target: '**/pages/*.ets'
+    ast:
+    - type: call
+      name: animateTo
+    llm: 检查状态切换是否使用动画过渡提供视觉反馈
+  description: 状态切换前应提供视觉过渡反馈
