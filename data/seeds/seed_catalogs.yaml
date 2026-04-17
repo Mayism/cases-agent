@@ -421,6 +421,92 @@ bug_fix:
             llm: 检查数量调整逻辑是否能实时触发总价更新和展示
     starter_kind: bug_fix_shopping_cart
 
+  - seed_id: bug_fix_arkui_list_refresh_353
+    title: 修复ForEach数据源更改界面不刷新的缺陷
+    input: 参照官方 FAQ（faqs-arkui-353）的指导，复现并修复在使用 ForEach 或 LazyForEach 循环渲染时，更改了对象内部的深层数据源属性，但界面 UI 没有同步刷新的缺陷。
+    keywords:
+      - ForEach
+      - LazyForEach
+      - 状态同步
+      - UI不刷新
+      - ObservedV2
+      - Trace
+    faq_refs:
+      - FAQ/使用ForEach&LazyForEach循环渲染时，会出现更改数据源时，界面不刷新的情况。如何解决.md
+    problem_statement: 页面在使用 ForEach 渲染对象列表数据时，当用户触发交互（如点击按钮）修改了列表中某个元素的内部属性，因为缺乏深层状态追踪，底层数据已变但界面 UI 没有任何刷新。
+    fix_targets:
+      - 重构列表元素的数据模型类，引入深层状态观察机制。
+      - 确保产生交互修改状态后，UI 能够同步实时响应。
+    constraints:
+      - name: 列表数据模型必须使用深层可追踪装饰器修饰
+        priority: P0
+        rules:
+          - target: "**/pages/*.ets"
+            ast:
+              - type: decorator
+                name: ObservedV2
+              - type: decorator
+                name: Trace
+            llm: 检查列表所用的数据模型类是否使用了 @ObservedV2 装饰，且需要改变的属性是否使用了 @Trace 装饰
+      - name: 列表渲染必须包含修改深层属性的交互逻辑
+        priority: P1
+        rules:
+          - target: "**/pages/*.ets"
+            ast:
+              - type: call
+                name: ForEach
+            llm: 检查 ForEach 内部的组件渲染逻辑中，是否包含能触发对应数据源属性变更的事件（如 onClick）
+
+  - seed_id: bug_fix_toggle_delayed_state
+    title: 修复Toggle组件点击后立即状态变更无法撤销的缺陷
+    input: 修复设置页面中Toggle开关点击后立即生效、无法延迟确认或撤销的问题。参照官方FAQ指导，实现点击后延迟改变状态的交互机制。
+    keywords:
+      - Toggle
+      - 开关
+      - 延迟状态
+      - 撤销
+      - 确认机制
+      - 状态切换
+      - onChange回调
+      - 设置页面
+      - 异步更新
+    faq_refs:
+      - FAQ/Toggle组件响应点击后会立即渲染并回调，如何实现点击后延迟改变状态.md
+    problem_statement: 设置页面中的Toggle开关控制重要功能（如自动同步、隐私模式等），点击后立即触发状态变更和相关回调，用户无法反悔或撤销，容易出现误操作导致功能意外开启/关闭。
+    fix_targets:
+      - 实现Toggle点击后延迟改变状态，给用户确认或撤销的机会。
+      - 状态变更前提供视觉反馈或动画过渡，而非立即切换。
+      - 延迟确认期间提供取消操作的交互入口。
+    constraints:
+      - name: Toggle状态变更必须延迟执行，而非立即响应
+        priority: P0
+        rules:
+          - target: "**/pages/*.ets"
+            ast:
+              - type: call
+                name: Toggle
+              - type: property_access
+                name: onChange
+            llm: 检查Toggle的onChange回调是否延迟执行状态更新，而非直接赋值
+      - name: 延迟期间必须提供取消或确认的交互机制
+        priority: P1
+        rules:
+          - target: "**/pages/*.ets"
+            ast:
+              - type: call
+                name: Button
+              - type: call
+                name: AlertDialog
+            llm: 检查是否提供确认对话框或取消按钮等交互入口
+      - name: 状态切换前应提供视觉过渡反馈
+        priority: P1
+        rules:
+          - target: "**/pages/*.ets"
+            ast:
+              - type: call
+                name: animateTo
+            llm: 检查状态切换是否使用动画过渡提供视觉反馈
+
 full_generation:
   - seed_id: proj_gen_food_restaurant_mgmt
     title: 生成美食行业餐厅管理后台元服务工程

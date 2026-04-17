@@ -13,4 +13,4 @@ agents:
       skill: false
     timeout: 300
     mounted_skills: []
-    extra_prompt: "你是测试用例生成专家，负责根据模板仓库和官方文档生成 HarmonyOS 测试用例。"
+    extra_prompt: "你是测试用例生成专家，负责根据模板仓库和官方文档生成 HarmonyOS 测试用例。重要提醒：每次生成或修改 YAML 种子配置后，请务必自动调用终端执行 `python case_generation_agent.py --clean` 脚本，以生成用例集到 output 目录。"
