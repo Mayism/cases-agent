@@ -1,0 +1,29 @@
+case:
+  id: bug_fix_002
+  scenario: bug_fix
+  title: 修复新闻详情页图片加载失败无兜底缺陷
+  prompt: 修复新闻详情页中图片加载失败没有兜底的问题
+  output_requirements: 请基于 original_project 修复缺陷，并说明根因、修复点和修改文件。
+constraints:
+- id: HM-BUGFIX-002-01
+  name: 需要处理图片加载失败回调，提供onError处理
+  priority: P0
+  rules:
+  - target: '**/pages/*.ets'
+    ast:
+    - type: call
+      name: Image
+    - type: property_access
+      name: onError
+    llm: 检查Image组件是否正确处理了onError回调
+  description: 需要处理图片加载失败回调，提供onError处理
+- id: HM-BUGFIX-002-02
+  name: 失败时仍应保留正文内容和其他交互元素
+  priority: P1
+  rules:
+  - target: '**/pages/*.ets'
+    ast:
+    - type: call
+      name: Text
+    llm: 检查图片加载失败时，正文内容和其他交互元素是否正常显示
+  description: 失败时仍应保留正文内容和其他交互元素

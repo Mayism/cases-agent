@@ -1,0 +1,37 @@
+case:
+  id: bug_fix_004
+  scenario: bug_fix
+  title: 修复点餐页面购物车列表刷新异常
+  prompt: 这是一个缺陷修复任务。修复点餐页面购物车数量更新后界面不刷新的问题。当前点餐页面购物车中修改商品数量后，购物车列表不会及时刷新，导致菜品数量和价格显示不一致。。请修复缺陷，保持现有业务结构稳定。
+  output_requirements: 请直接在当前工程中修改代码并修复缺陷，工程需可编译，并在回复中说明根因、修复点和修改文件。
+constraints:
+  - id: HM-BUGFIX-004-01
+    name: 购物车数据模型的可追踪字段必须启用@Trace装饰器
+    description: 原代码中购物车关键字段(goodsList/num等)的@Trace被注释，导致状态变更无法驱动UI刷新，必须恢复@Trace
+    priority: P0
+    rules:
+      - target: '**/models/*.ets'
+        ast:
+          - type: decorator
+            name: Trace
+        llm: 检查购物车数据模型中goodsList、num等影响UI刷新的关键字段是否已恢复@Trace装饰器
+  - id: HM-BUGFIX-004-02
+    name: 购物车列表ForEach必须使用商品唯一标识作为key，禁止使用数组索引
+    description: 原代码购物车列表ForEach使用数组索引index作为key，删除或插入商品时会导致列表错位，必须改为使用goodsId或id等稳定唯一标识
+    priority: P1
+    rules:
+      - target: '**/components/**/*.ets'
+        ast:
+          - type: call
+            name: ForEach
+        llm: 检查购物车列表渲染ForEach的key生成函数是否使用了稳定唯一标识(如goodsId/id)而非数组索引
+  - id: HM-BUGFIX-004-03
+    name: 购物车商品数量变更后总价必须自动重算并同步刷新
+    description: 修复后购物车中增减商品数量时，单价展示与总价必须同步更新，不能出现数量变了但价格不变的情况
+    priority: P1
+    rules:
+      - target: '**/models/*.ets'
+        ast:
+          - type: decorator
+            name: Trace
+        llm: 检查购物车总价计算依赖的字段(如money/num/goodsList)是否都有@Trace追踪，确保数量变化后价格同步刷新

@@ -1,0 +1,53 @@
+case:
+  id: bug_fix_011
+  scenario: bug_fix
+  title: 修复Toggle组件点击后立即状态变更无法撤销的缺陷
+  prompt: '修复设置页面中Toggle开关点击后立即生效、无法延迟确认或撤销的问题。参照官方FAQ指导，实现点击后延迟改变状态的交互机制。
+
+    未提供模板来源，请先构造一个可复现该缺陷的 HarmonyOS 原始场景和原始代码，再在此基础上完成修复。
+
+    问题现象：设置页面中的Toggle开关控制重要功能（如自动同步、隐私模式等），点击后立即触发状态变更和相关回调，用户无法反悔或撤销，容易出现误操作导致功能意外开启/关闭。
+
+    修复目标：
+
+    - 实现Toggle点击后延迟改变状态，给用户确认或撤销的机会。
+
+    - 状态变更前提供视觉反馈或动画过渡，而非立即切换。
+
+    - 延迟确认期间提供取消操作的交互入口。'
+  output_requirements: 请先在 original_project 中构造原始缺陷场景和原始代码，再基于该 original_project 完成修复，并说明场景构造方式、根因、修复点和修改文件。
+constraints:
+- id: HM-BUGFIX-011-01
+  name: Toggle状态变更必须延迟执行，而非立即响应
+  priority: P0
+  rules:
+  - target: '**/pages/*.ets'
+    ast:
+    - type: call
+      name: Toggle
+    - type: property_access
+      name: onChange
+    llm: 检查Toggle的onChange回调是否延迟执行状态更新，而非直接赋值
+  description: Toggle状态变更必须延迟执行，而非立即响应
+- id: HM-BUGFIX-011-02
+  name: 延迟期间必须提供取消或确认的交互机制
+  priority: P1
+  rules:
+  - target: '**/pages/*.ets'
+    ast:
+    - type: call
+      name: Button
+    - type: call
+      name: AlertDialog
+    llm: 检查是否提供确认对话框或取消按钮等交互入口
+  description: 延迟期间必须提供取消或确认的交互机制
+- id: HM-BUGFIX-011-03
+  name: 状态切换前应提供视觉过渡反馈
+  priority: P1
+  rules:
+  - target: '**/pages/*.ets'
+    ast:
+    - type: call
+      name: animateTo
+    llm: 检查状态切换是否使用动画过渡提供视觉反馈
+  description: 状态切换前应提供视觉过渡反馈
