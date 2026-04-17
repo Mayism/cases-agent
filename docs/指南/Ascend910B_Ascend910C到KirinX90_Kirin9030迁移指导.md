@@ -1,0 +1,20 @@
+---
+title: Ascend910B/Ascend910C到KirinX90/Kirin9030迁移指导
+source: https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/cannkit-ascend910b-kirinx90
+category: 指南
+updated_at: 2026-03-13T03:17:22.898Z
+---
+
+# Ascend910B/Ascend910C到KirinX90/Kirin9030迁移指导
+
+-   **[概述](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/cannkit-migration-guidance-overview)**  
+    
+-   **[基础API迁移指导](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/cannkit-basic-api)**  
+    
+-   **[高阶API迁移指导](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/cannkit-adv-api)**  
+    
+-   **[算子编译迁移指导](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/cannkit-operator-compilation-migration-guide)**
+
+---
+
+*来源: https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/cannkit-ascend910b-kirinx90*

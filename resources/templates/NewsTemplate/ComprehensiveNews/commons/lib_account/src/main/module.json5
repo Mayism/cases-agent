@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "lib_account",
+    "type": "har",
+    "deviceTypes": [
+      "phone",
+      "tablet"
+    ]
+  }
+}

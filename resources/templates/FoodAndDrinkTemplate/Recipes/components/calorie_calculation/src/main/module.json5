@@ -1,0 +1,9 @@
+{
+  "module": {
+    "name": "calorie_calculation",
+    "type": "har",
+    "deviceTypes": [
+      "default"
+    ]
+  }
+}

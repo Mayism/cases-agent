@@ -1,0 +1,128 @@
+---
+title: Duplicate
+source: https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/cannkit-data-duplicate
+category: 指南
+updated_at: 2026-03-13T01:47:39.138Z
+---
+
+# Duplicate
+
+## 功能说明
+
+将一个变量或一个立即数，复制多次并填充到向量，其中PAR表示矢量计算单元一个迭代能够处理的元素个数：
+
+![](https://contentcenter-vali-drcn.dbankcdn.cn/pvt_2/DeveloperAlliance_scene_100_1/b1/v3/qgLt6j_TSbCC_2LmMCTv2A/zh-cn_image_0000002528648999.png?HW-CC-KV=V1&HW-CC-Date=20260313T014659Z&HW-CC-Expire=86400&HW-CC-Sign=4B044ADC0DE363D253948396F9C41BF4806F3AE55DE3AC3F77F05552D25292E0)
+
+## 函数原型
+
+tensor前n个数据计算：
+
+```cpp
+template <typename T>
+void Duplicate(const LocalTensor<T>& dstLocal, const T& scalarValue, const int32_t& calCount)
+```
+
+## 参数说明
+
+**表1** 参数说明
+
+| 参数名称 | 输入/输出 | 含义 |
+| --- | --- | --- |
+| dstLocal | 输出 | [LocalTensor](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/cannkit-localtensor) |
+| scalarValue | 输入 | 被的源操作数，支持输入变量和立即数，数据类型需与dstLocal中元素的数据类型保持一致。 |
+| calCount | 输入 | 输入数据元素个数。 |
+
+## 支持的型号
+
+Kirin9020系列处理器
+
+KirinX90系列处理器
+
+## 注意事项
+
+-   操作数地址偏移对齐要求请参见[通用约束](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/cannkit-general-constraints)。
+-   开发者输入立即数需自行保证不超出dstLocal中元素数据类型对应的大小范围。
+
+## 返回值
+
+无
+
+## 调用示例
+
+本样例中只展示Compute流程中的部分代码。如果开发者需要运行样例代码，请将该代码段拷贝并替换[样例模板](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/cannkit-data-duplicate#zh-cn_topic_0000002105556742_section1553420013509)中的Compute函数粗体部分即可。
+
+tensor前n个数据计算样例：
+
+```cpp
+half inputVal(18.0);
+AscendC::Duplicate<half>(dstLocal, inputVal, srcDataSize);
+```
+
+结果示例如下。
+
+```plaintext
+输入数据：[0 1.0 2.0 ... 254.0 255.0]    // 不关心输入数据，会被Duplicate盖掉
+输出数据：[18.0 18.0 18.0 ... 18.0 18.0]
+```
+
+## 样例模板
+
+```cpp
+#include "kernel_operator.h"
+ class KernelDuplicate {
+ public:
+     __aicore__ inline KernelDuplicate() {}
+     __aicore__ inline void Init(__gm__ uint8_t* src, __gm__ uint8_t* dstGm)
+     {
+         srcGlobal.SetGlobalBuffer((__gm__ half*)src);
+         dstGlobal.SetGlobalBuffer((__gm__ half*)dstGm);
+         pipe.InitBuffer(inQueueSrc, 1, srcDataSize * sizeof(half));
+         pipe.InitBuffer(outQueueDst, 1, dstDataSize * sizeof(half));
+     }
+     __aicore__ inline void Process()
+     {
+         CopyIn();
+         Compute();
+         CopyOut();
+     }
+ private:
+     __aicore__ inline void CopyIn()
+     {
+         AscendC::LocalTensor<half> srcLocal = inQueueSrc.AllocTensor<half>();
+         AscendC::DataCopy(srcLocal, srcGlobal, srcDataSize);
+         inQueueSrc.EnQue(srcLocal);
+     }
+     __aicore__ inline void Compute()
+     {
+         AscendC::LocalTensor<half> srcLocal = inQueueSrc.DeQue<half>();
+         AscendC::LocalTensor<half> dstLocal = outQueueDst.AllocTensor<half>();
+         half inputVal(18.0);
+         AscendC::Duplicate<half>(dstLocal, inputVal, srcDataSize);
+         outQueueDst.EnQue<half>(dstLocal);
+         inQueueSrc.FreeTensor(srcLocal);
+     }
+     __aicore__ inline void CopyOut()
+     {
+         AscendC::LocalTensor<half> dstLocal = outQueueDst.DeQue<half>();
+         AscendC::DataCopy(dstGlobal, dstLocal, dstDataSize);
+         outQueueDst.FreeTensor(dstLocal);
+     }
+ private:
+     AscendC::TPipe pipe;
+     AscendC::TQue<AscendC::QuePosition::VECIN, 1> inQueueSrc;
+     AscendC::TQue<AscendC::QuePosition::VECOUT, 1> outQueueDst;
+     AscendC::GlobalTensor<half> srcGlobal, dstGlobal;
+     int srcDataSize = 256;
+     int dstDataSize = 256;
+ };
+ extern "C" __global__ __aicore__ void duplicate_kernel(__gm__ uint8_t* src, __gm__ uint8_t* dstGm)
+ {
+     KernelDuplicate op;
+     op.Init(src, dstGm);
+     op.Process();
+ }
+```
+
+---
+
+*来源: https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/cannkit-data-duplicate*

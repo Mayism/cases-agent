@@ -1,0 +1,12 @@
+{
+  "color": [
+    {
+      "name": "sys_brand_fuchsia",
+      "value": "#E64566"
+    },
+    {
+      "name": "sys_background_white",
+      "value": "#FFFFFF"
+    }
+  ]
+}

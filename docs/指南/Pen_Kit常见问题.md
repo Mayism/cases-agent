@@ -1,0 +1,28 @@
+---
+title: Pen Kit常见问题
+source: https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/pen-faq
+category: 指南
+updated_at: 2026-03-12T14:17:00.358Z
+---
+
+# Pen Kit常见问题
+
+-   **[Pen Kit手写套件是否支持自定义笔刷？](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/pen-faq-1)**  
+    
+-   **[Pen Kit手写套件是否支持自定义笔宽？](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/pen-faq-2)**  
+    
+-   **[Pen Kit手写套件是否支持自定义颜色？](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/pen-faq-3)**  
+    
+-   **[Pen Kit手写套件的工具栏是否可以单独提供？](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/pen-faq-4)**  
+    
+-   **[集成了Pen Kit手写套件，还需要集成报点预测吗？](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/pen-faq-5)**  
+    
+-   **[集成了Pen Kit手写套件，还需要集成一笔成形吗？](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/pen-faq-6)**  
+    
+-   **[Pen Kit报点预测功能能够调整预测的程度吗？](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/pen-faq-7)**  
+    
+-   **[为什么一笔成形识别不出来？](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/pen-faq-8)**
+
+---
+
+*来源: https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/pen-faq*

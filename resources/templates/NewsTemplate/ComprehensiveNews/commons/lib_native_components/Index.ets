@@ -1,0 +1,1 @@
+export { CardRegisterEngine } from './src/main/ets/utils/CardRegisterEngine'

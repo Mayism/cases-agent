@@ -1,0 +1,16 @@
+agents:
+  - id: "case_generation_agent"
+    name: "用例生成 Agent"
+    api_base: "http://127.0.0.1:4096"
+    opencode_agent: "plan"
+    opencode_proxy:
+      http_proxy: "http://127.0.0.1:7890"
+      https_proxy: "http://127.0.0.1:7890"
+      all_proxy: "http://127.0.0.1:7890"
+      no_proxy: "127.0.0.1,localhost"
+    model: "bailian-coding-plan/glm-5"
+    tools:
+      skill: false
+    timeout: 300
+    mounted_skills: []
+    extra_prompt: "你是测试用例生成专家，负责根据模板仓库和官方文档生成 HarmonyOS 测试用例。"

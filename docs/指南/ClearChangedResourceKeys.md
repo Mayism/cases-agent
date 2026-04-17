@@ -1,0 +1,36 @@
+---
+title: ClearChangedResourceKeys
+source: https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/cannkit-clearchangedresourcekeys
+category: 指南
+updated_at: 2026-03-13T02:47:42.601Z
+---
+
+# ClearChangedResourceKeys
+
+## 函数功能
+
+一般由框架调用。
+
+当变化了的资源触发重新推导之后，需要调用该接口清除inference\_context中保存的变化了的资源标识。
+
+## 函数原型
+
+```cpp
+void ClearChangedResourceKeys()
+```
+
+## 参数说明
+
+无
+
+## 返回值
+
+无
+
+## 约束说明
+
+无
+
+---
+
+*来源: https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/cannkit-clearchangedresourcekeys*

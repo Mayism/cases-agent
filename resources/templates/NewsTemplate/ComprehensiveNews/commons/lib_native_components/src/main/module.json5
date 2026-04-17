@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "lib_native_components",
+    "type": "har",
+    "deviceTypes": [
+      "phone",
+      "tablet"
+    ]
+  }
+}

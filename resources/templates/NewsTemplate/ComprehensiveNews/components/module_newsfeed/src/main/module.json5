@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "module_newsfeed",
+    "type": "har",
+    "deviceTypes": [
+      "phone",
+      "tablet"
+    ]
+  }
+}

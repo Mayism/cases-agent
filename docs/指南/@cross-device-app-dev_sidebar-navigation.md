@@ -1,0 +1,72 @@
+---
+title: @cross-device-app-dev/sidebar-navigation
+source: https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ide_sidebar-navigation
+category: 指南
+updated_at: 2026-03-13T04:42:19.521Z
+---
+
+# @cross-device-app-dev/sidebar-navigation
+
+对于2in1和tablet设备，应将Tabs组件设置为侧边导航栏。
+
+## 规则配置
+
+```cangjie
+// code-linter.json5
+{
+  "rules": {
+    "@cross-device-app-dev/sidebar-navigation": "warn"
+  }
+}
+```
+
+## 选项
+
+该规则无需配置额外选项。
+
+## 正例
+
+```less
+@Entry
+@Component
+struct Index {
+  build() {
+    Tabs() {
+      TabContent() {
+      }.tabBar("tab1")
+      TabContent() {
+      }.tabBar("tab2")
+    }.vertical(true)
+  }
+}
+```
+
+## 反例
+
+```less
+@Entry
+@Component
+struct Index {
+  build() {
+    Tabs() {
+      TabContent() {
+      }.tabBar("tab1")
+      TabContent() {
+      }.tabBar("tab2")
+    }
+  }
+}
+```
+
+## 规则集
+
+```cangjie
+plugin:@cross-device-app-dev/recommended
+plugin:@cross-device-app-dev/all
+```
+
+Code Linter代码检查规则的配置指导请参考[Code Linter代码检查](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ide-code-linter)。
+
+---
+
+*来源: https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ide_sidebar-navigation*

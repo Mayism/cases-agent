@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "module_setfontsize",
+    "type": "har",
+    "deviceTypes": [
+      "phone",
+      "tablet"
+    ]
+  }
+}

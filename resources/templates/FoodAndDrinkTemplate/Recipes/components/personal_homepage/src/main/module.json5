@@ -1,0 +1,9 @@
+{
+  "module": {
+    "name": "personal_homepage",
+    "type": "har",
+    "deviceTypes": [
+      "default"
+    ]
+  }
+}

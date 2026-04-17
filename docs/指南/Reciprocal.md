@@ -1,0 +1,79 @@
+---
+title: Reciprocal
+source: https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/cannkit-reciprocal
+category: 指南
+updated_at: 2026-03-13T01:43:19.986Z
+---
+
+# Reciprocal
+
+## 函数功能
+
+按元素取倒数，计算公式如下，其中PAR表示矢量计算单元一个迭代能够处理的元素个数：
+
+![](https://contentcenter-vali-drcn.dbankcdn.cn/pvt_2/DeveloperAlliance_scene_100_1/80/v3/9WC73VCaQKGxbPykSUPF7A/zh-cn_image_0000002528648973.png?HW-CC-KV=V1&HW-CC-Date=20260313T014239Z&HW-CC-Expire=86400&HW-CC-Sign=E33CD5D92119FBE3D08A5285B0E08CC4910089C542931568C6E166CC56FDCC5C "点击放大")
+
+## 函数原型
+
+tensor前n个数据计算：
+
+```cpp
+template <typename T>
+__aicore__ inline void Reciprocal(const LocalTensor<T>& dstLocal, const LocalTensor<T>& srcLocal, const int32_t& calCount)
+```
+
+## 参数说明
+
+**表1** 模板参数说明
+
+| 参数名 | 描述 |
+| --- | --- |
+| T | 操作数数据类型。 |
+
+**表2** 参数说明
+
+| 参数名 | 输入/输出 | 描述 |
+| --- | --- | --- |
+| dstLocal | 输出 | [LocalTensor](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/cannkit-localtensor) |
+| srcLocal | 输入 | [LocalTensor](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/cannkit-localtensor) |
+| calCount | 输入 | 输入数据元素个数。 |
+
+## 返回值
+
+无
+
+## 支持的型号
+
+Kirin9020系列处理器
+
+KirinX90系列处理器
+
+## 约束说明
+
+-   操作数地址偏移对齐要求请参见[通用约束](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/cannkit-general-constraints)。
+-   如果srcLocal中的数值为0，可能会产生未知结果。
+-   使用Reciprocal时，half的算子结果对比误差不满足双千分之一的要求，float的算子结果对比误差不满足双万分之一的要求，如果需要高精度，建议使用Div替代实现。
+
+## 调用示例
+
+本样例中只展示Compute流程中的部分代码。本样例的srcLocal和dstLocal均为half类型，占16位bit。
+
+如果开发者需要运行样例代码，请将该代码段拷贝并替换[样例模板](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/cannkit-vector-calculation-binocular-more#zh-cn_topic_0000002123589629_section11009mcpsimp)中Compute函数的部分代码即可。
+
+tensor前n个数据计算样例：
+
+```cpp
+AscendC::Reciprocal(dstLocal, srcLocal, 512);
+```
+
+结果示例如下。
+
+```plaintext
+输入数据(srcLocal): [-7.152 -7.24 1.771 ... -1.339 4.473]
+输出数据(dstLocal):
+[-0.1396 -0.1382 0.5645 ... -0.748 0.2231]
+```
+
+---
+
+*来源: https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/cannkit-reciprocal*

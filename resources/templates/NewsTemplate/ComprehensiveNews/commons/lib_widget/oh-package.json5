@@ -1,0 +1,13 @@
+{
+  "name": "lib_widget",
+  "version": "1.0.0",
+  "description": "Please describe the basic information.",
+  "main": "Index.ets",
+  "author": "",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "lib_common": "file:../lib_common",
+    "module_share": "file:../../components/module_share",
+    "@hw-agconnect/util-log": "1.0.0"
+  }
+}

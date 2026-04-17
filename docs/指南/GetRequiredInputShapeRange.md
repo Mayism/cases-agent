@@ -1,0 +1,48 @@
+---
+title: GetRequiredInputShapeRange
+source: https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/cannkit-getrequiredinputshaperange
+category: 指南
+updated_at: 2026-03-13T02:21:03.197Z
+---
+
+# GetRequiredInputShapeRange
+
+## 函数功能
+
+根据算子原型定义中的输入索引获取对应的必选输入shape range指针。
+
+## 函数原型
+
+```cpp
+const Range<Shape> *GetRequiredInputShapeRange(const size_t ir_index) const;
+```
+
+## 参数说明
+
+| 参数 | 输入/输出 | 说明 |
+| --- | --- | --- |
+| ir_index | 输入 | 必选输入在算子IR原型定义中的索引，从0开始计数。 |
+
+## 返回值
+
+shape range指针，ir\_index非法时，返回空指针。
+
+## 约束说明
+
+无
+
+## 调用示例
+
+```cpp
+const auto infer_shape_range_func = [](gert::InferShapeRangeContext *context) -> graphStatus {
+  auto input_shape_range = context->GetRequiredInputShapeRange(0U);
+  auto output_shape_range = context->GetOutputShapeRange(0U);
+  output_shape_range->SetMin(const_cast<gert::Shape *>(input_shape_range->GetMin()));
+  output_shape_range->SetMax(const_cast<gert::Shape *>(input_shape_range->GetMax()));
+  return GRAPH_SUCCESS;
+};
+```
+
+---
+
+*来源: https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/cannkit-getrequiredinputshaperange*

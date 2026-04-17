@@ -1,0 +1,14 @@
+---
+title: GET请求的bodySign是对谁签名得到的？
+source: https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/payment-faq-3
+category: 指南
+updated_at: 2026-03-13T00:16:34.588Z
+---
+
+# GET请求的bodySign是对谁签名得到的？
+
+GET请求需要对path url进行签名，例如[查询支付订单](https://developer.huawei.com/consumer/cn/doc/harmonyos-references/payment-sys-query-order)的待签名内容是：“/api/v2/aggr/transactions/orders/{sysTransOrderNo}”。
+
+---
+
+*来源: https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/payment-faq-3*

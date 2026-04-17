@@ -1,0 +1,11 @@
+{
+  "module": {
+    "name": "shopping_basket_test",
+    "type": "feature",
+    "deviceTypes": [
+      "phone"
+    ],
+    "deliveryWithInstall": true,
+    "installationFree": false
+  }
+}

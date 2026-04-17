@@ -1,0 +1,14 @@
+{
+  "routerMap": [
+    {
+      "name": "InteractionPage",
+      "pageSourceFile": "src/main/ets/pages/InteractionPage.ets",
+      "buildFunction": "InteractionPageBuilder"
+    },
+    {
+      "name": "PublishPostPage",
+      "pageSourceFile": "src/main/ets/pages/PublishPostPage.ets",
+      "buildFunction": "PublishPostPageBuilder"
+    }
+  ]
+}

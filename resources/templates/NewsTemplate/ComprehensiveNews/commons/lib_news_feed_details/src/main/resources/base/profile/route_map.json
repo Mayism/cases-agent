@@ -1,0 +1,9 @@
+{
+  "routerMap": [
+    {
+      "name": "ArticleFeedDetails",
+      "pageSourceFile": "src/main/ets/views/ArticleFeedDetails.ets",
+      "buildFunction": "ArticleFeedDetailsBuilder"
+    }
+  ]
+}

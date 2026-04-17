@@ -1,0 +1,11 @@
+{
+  "module": {
+    "name": "book_queue_test",
+    "type": "feature",
+    "deviceTypes": [
+      "default"
+    ],
+    "deliveryWithInstall": true,
+    "installationFree": true
+  }
+}

@@ -1,0 +1,12 @@
+---
+title: 集成了Pen Kit手写套件，还需要集成报点预测吗？
+source: https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/pen-faq-5
+---
+
+# 集成了Pen Kit手写套件，还需要集成报点预测吗？
+
+不需要，手写套件已经自带报点预测功能。
+
+
+*来源: https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/pen-faq-5*
+

@@ -1,0 +1,36 @@
+{
+  "routerMap": [
+    {
+      "name": "MainEntry",
+      "pageSourceFile": "src/main/ets/pages/MainEntry.ets",
+      "buildFunction": "MainEntryBuilder",
+      "data": {
+        "description": "this is MainEntryBuilder"
+      }
+    },
+    {
+      "name": "PrivacyPolicyPage",
+      "pageSourceFile": "src/main/ets/pages/PrivacyPolicyPage.ets",
+      "buildFunction": "PrivacyPolicyPageBuilder",
+      "data": {
+        "description": "this is PrivacyPolicyPageBuilder"
+      }
+    },
+    {
+      "name": "LaunchPage",
+      "pageSourceFile": "src/main/ets/pages/LaunchPage.ets",
+      "buildFunction": "LaunchPageBuilder",
+      "data": {
+        "description": "this is LaunchPageBuilder"
+      }
+    },
+    {
+      "name": "LaunchAdPage",
+      "pageSourceFile": "src/main/ets/pages/LaunchAdPage.ets",
+      "buildFunction": "LaunchAdPageBuilder",
+      "data": {
+        "description": "this is LaunchAdPageBuilder"
+      }
+    }
+  ]
+}

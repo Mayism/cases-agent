@@ -1,0 +1,40 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "这是一个订座排号功能模板"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "这是一个订座排号功能模板"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "订座排号模板"
+    },
+    {
+      "name": "reason_read_calendar",
+      "value": "添加订座日程"
+    },
+    {
+      "name": "reason_write_calendar",
+      "value": "添加订座日程"
+    },
+    {
+      "name": "PhoneFormAbility_desc",
+      "value": "form_description"
+    },
+    {
+      "name": "PhoneFormAbility_label",
+      "value": "form_label"
+    },
+    {
+      "name": "widget_desc",
+      "value": "订座排号"
+    },
+    {
+      "name": "widget_display_name",
+      "value": "订座排号"
+    }
+  ]
+}

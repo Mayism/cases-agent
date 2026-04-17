@@ -1,0 +1,53 @@
+---
+title: FusionParseParamsFn（Overload）
+source: https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/cannkit-fusionparseparamsfn-overload
+category: 指南
+updated_at: 2026-03-13T02:57:54.759Z
+---
+
+# FusionParseParamsFn（Overload）
+
+## 函数功能
+
+注册解析融合算子属性的函数，为[FusionParseParamsFn](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/cannkit-fusionparseparamsfn)的重载函数。
+
+## 函数原型
+
+```cpp
+OpRegistrationData &FusionParseParamsFn(const FusionParseParamByOpFunc &fusion_parse_param_fn)
+```
+
+## 参数说明
+
+| 参数 | 输入/输出 | 说明 |
+| --- | --- | --- |
+| fusion_parse_param_fn | 输入 | [回调函数FusionParseParamByOpFunc](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/cannkit-fusionparseparamsfn-overload#zh-cn_topic_0000002083616790_section102947mcpsimp) |
+
+## 回调函数FusionParseParamByOpFunc
+
+开发者自定义并实现FusionParseParamByOpFunc类函数，完成原始模型中属性到适配AI处理器的模型中的属性映射，将结果填入Operator类中。
+
+```cpp
+Status FusionParseParamByOpFunc(const std::vector<ge::Operator> &op_src,  ge::Operator &op_dest);
+```
+
+**表1** 参数说明
+
+| 参数 | 输入/输出 | 说明 |
+| --- | --- | --- |
+| op_src | 输入 | [Operator](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/cannkit-ge-operator) |
+| op_dest | 输出 | [Operator](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/cannkit-ge-operator) |
+
+## 调用示例
+
+```cpp
+REGISTER_CUSTOM_OP(XXXXXX)
+.FrameworkType(TENSORFLOW)
+.FusionParseParamsFn(FusionParseParamsFn)
+.OriginOpType(XXXXX)
+.ImplyType(XXXXX);
+```
+
+---
+
+*来源: https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/cannkit-fusionparseparamsfn-overload*

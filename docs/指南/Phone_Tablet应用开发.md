@@ -1,0 +1,22 @@
+---
+title: Phone/Tablet应用开发
+source: https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/health-app-dev
+category: 指南
+updated_at: 2026-03-12T22:14:35.345Z
+---
+
+# Phone/Tablet应用开发
+
+-   **[拉起运动健康App隐私授权](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/health-privacy-authorization)**  
+    
+-   **[管理用户授权](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/health-add-permissions)**  
+    
+-   **[管理数据源](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/health-datasource-manage)**  
+    
+-   **[管理运动健康数据](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/health-data-manage)**  
+    
+-   **[手动数据同步](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/health-cloudsync)**
+
+---
+
+*来源: https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/health-app-dev*

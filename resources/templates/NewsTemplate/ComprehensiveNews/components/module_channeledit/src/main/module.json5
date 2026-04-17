@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "module_channeledit",
+    "type": "har",
+    "deviceTypes": [
+      "phone",
+      "tablet"
+    ]
+  }
+}

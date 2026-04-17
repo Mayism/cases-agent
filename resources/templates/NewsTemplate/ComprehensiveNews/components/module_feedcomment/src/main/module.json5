@@ -1,0 +1,11 @@
+{
+  "module": {
+    "name": "module_feedcomment",
+    "type": "har",
+    "routerMap": "$profile:route_map",
+    "deviceTypes": [
+      "phone",
+      "tablet"
+    ]
+  }
+}

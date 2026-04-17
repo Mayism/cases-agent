@@ -1,0 +1,26 @@
+[
+  {
+    "title": "民生",
+    "resource": "people"
+  },
+  {
+    "title": "科普",
+    "resource": "science"
+  },
+  {
+    "title": "娱乐",
+    "resource": "fun"
+  },
+  {
+    "title": "夜读",
+    "resource": "read"
+  },
+  {
+    "title": "汽车",
+    "resource": "car"
+  },
+  {
+    "title": "V观",
+    "resource": "view"
+  }
+]

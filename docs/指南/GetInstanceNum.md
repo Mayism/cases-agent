@@ -1,0 +1,41 @@
+---
+title: GetInstanceNum
+source: https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/cannkit-getinstancenum
+category: 指南
+updated_at: 2026-03-13T02:06:53.446Z
+---
+
+# GetInstanceNum
+
+## 函数功能
+
+获取IR定义某个输入对应的实际输入个数。
+
+## 函数原型
+
+```cpp
+uint32_t GetInstanceNum() const
+```
+
+## 参数说明
+
+无
+
+## 返回值
+
+IR定义某个输入对应的实际输入个数。
+
+## 约束说明
+
+无
+
+## 调用示例
+
+```cpp
+AnchorInstanceInfo anchor_0(0, 10); // IR定义的第一个输入是动态输入，且有10个实际输入
+auto input_num_0 = anchor_0.GetInstanceNum(); // input_num_0 = 10
+```
+
+---
+
+*来源: https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/cannkit-getinstancenum*

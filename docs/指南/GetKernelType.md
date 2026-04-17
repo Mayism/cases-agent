@@ -1,0 +1,42 @@
+---
+title: GetKernelType
+source: https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/cannkit-getkerneltype
+category: 指南
+updated_at: 2026-03-13T02:17:57.368Z
+---
+
+# GetKernelType
+
+## 函数功能
+
+获取当前内核的类型。
+
+## 函数原型
+
+```cpp
+const char *GetKernelType() const
+```
+
+## 参数说明
+
+无
+
+## 返回值
+
+当前内核的类型。
+
+## 约束说明
+
+无
+
+## 调用示例
+
+```cpp
+// 假设已存在KernelContext *context
+auto extend_context = reinterpret_cast<ExtendedKernelContext *>(context);
+auto kernel_type = extend_context->GetKernelType();
+```
+
+---
+
+*来源: https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/cannkit-getkerneltype*

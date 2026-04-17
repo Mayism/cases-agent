@@ -1,0 +1,28 @@
+{
+  "routerMap": [
+    {
+      "name": "BloggerProfilePage",
+      "pageSourceFile": "src/main/ets/pages/BloggerProfilePage.ets",
+      "buildFunction": "BloggerProfilePageBuilder",
+      "data": {
+        "description": "this is BloggerProfilePageBuilder"
+      }
+    },
+    {
+      "name": "FollowersPage",
+      "pageSourceFile": "src/main/ets/pages/FollowersPage.ets",
+      "buildFunction": "FollowersPageBuilder",
+      "data": {
+        "description": "this is FollowersPageBuilder"
+      }
+    },
+    {
+      "name": "SearchPage",
+      "pageSourceFile": "src/main/ets/pages/SearchPage.ets",
+      "buildFunction": "SearchPageBuilder",
+      "data": {
+        "description": "this is SearchPageBuilder"
+      }
+    }
+  ]
+}

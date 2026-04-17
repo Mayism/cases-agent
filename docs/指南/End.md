@@ -1,0 +1,45 @@
+---
+title: End
+source: https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/cannkit-end
+category: 指南
+updated_at: 2026-03-13T01:59:16.263Z
+---
+
+# End
+
+## 功能说明
+
+单核内Matmul矩阵相乘计算结束后必须调用一次End函数。
+
+## 函数原型
+
+```cpp
+__aicore__ inline void End()
+```
+
+## 参数说明
+
+无
+
+## 返回值
+
+无
+
+## 支持的型号
+
+Kirin9020系列处理器
+
+## 注意事项
+
+无
+
+## 调用示例
+
+```cpp
+mm.IterateAll(gm_c);
+mm.End();
+```
+
+---
+
+*来源: https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/cannkit-end*

@@ -1,0 +1,19 @@
+{
+  "module": {
+    "name": "lib_flex_layout",
+    "type": "har",
+    "deviceTypes": [
+      "phone",
+      "tablet"
+    ],
+    "requestPermissions": [
+      {
+        "name": "ohos.permission.APPROXIMATELY_LOCATION",
+        "reason": "$string:apply_location_reason",
+        "usedScene": {
+          "when": "inuse"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,6 @@
+__pycache__/
+*.py[cod]
+.DS_Store
+
+output/test_cases/*
+!output/test_cases/.gitkeep

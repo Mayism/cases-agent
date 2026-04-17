@@ -1,0 +1,51 @@
+---
+title: @security/no-unsafe-sm4
+source: https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ide_no-unsafe-sm4
+category: 指南
+updated_at: 2026-03-13T04:29:57.719Z
+---
+
+# @security/no-unsafe-sm4
+
+此规则禁止不安全的SM4算法，如加密模式ECB。推荐使用SM4\_CBC\_PKCS5Padding等不同算法，详情参见：[对称加解密算法](https://developer.huawei.com/consumer/cn/doc/AppGallery-connect-Guides/aegis-encryption-and-decryption-symmetry-0000001861247310)。
+
+## 规则配置
+
+```cangjie
+// code-linter.json5
+{
+  "rules": {
+    "@security/no-unsafe-sm4": "warn"
+  }
+}
+```
+
+## 选项
+
+该规则无需配置额外选项。
+
+## 正例
+
+```javascript
+import cryptoFramework from '@ohos.security.cryptoFramework';
+cryptoFramework.createKdf('SM4_128|CBC|PKCS7')
+```
+
+## 反例
+
+```javascript
+import cryptoFramework from '@ohos.security.cryptoFramework';
+cryptoFramework.createCipher('SM4_128|ECB|PKCS7')
+```
+
+## 规则集
+
+```sql
+plugin:@security/all
+```
+
+Code Linter代码检查规则的配置指导请参考[Code Linter代码检查](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ide-code-linter)。
+
+---
+
+*来源: https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ide_no-unsafe-sm4*

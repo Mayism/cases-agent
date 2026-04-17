@@ -1,0 +1,64 @@
+{
+  "routerMap": [
+    {
+      "name": "BrowsingHistory",
+      "pageSourceFile": "src/main/ets/pages/BrowsingHistory.ets",
+      "buildFunction": "BrowsingHistoryBuilder"
+    },
+    {
+      "name": "MyCollection",
+      "pageSourceFile": "src/main/ets/pages/MyCollection.ets",
+      "buildFunction": "MyCollectionBuilder"
+    },
+    {
+      "name": "SettingsPage",
+      "pageSourceFile": "src/main/ets/pages/SettingsPage.ets",
+      "buildFunction": "SettingsPageBuilder"
+    },
+    {
+      "name": "PersonalInfo",
+      "pageSourceFile": "src/main/ets/pages/PersonalInfo.ets",
+      "buildFunction": "PersonalInfoBuilder"
+    },
+    {
+      "name": "PrivacyPolicyDetailPage",
+      "pageSourceFile": "src/main/ets/pages/PrivacyPolicyDetailPage.ets",
+      "buildFunction": "PrivacyPolicyDetailPageBuilder"
+    },
+    {
+      "name": "QuickLoginPage",
+      "pageSourceFile": "src/main/ets/pages/QuickLoginPage.ets",
+      "buildFunction": "QuickLoginPageBuilder"
+    },
+    {
+      "name": "TermsOfServicePage",
+      "pageSourceFile": "src/main/ets/pages/TermsOfServicePage.ets",
+      "buildFunction": "TermsOfServicePageBuilder"
+    },
+    {
+      "name": "UploadRecipePage",
+      "pageSourceFile": "src/main/ets/pages/UploadRecipePage.ets",
+      "buildFunction": "UploadRecipeBuilder"
+    },
+    {
+      "name": "SideBarPage",
+      "pageSourceFile": "src/main/ets/pages/SideBarPage.ets",
+      "buildFunction": "SideBarPageBuilder"
+    },
+    {
+      "name": "NoticeCenterPage",
+      "pageSourceFile": "src/main/ets/pages/NoticeCenterPage.ets",
+      "buildFunction": "NoticeCenterPageBuilder"
+    },
+    {
+      "name": "NoticeDetailPage",
+      "pageSourceFile": "src/main/ets/pages/NoticeDetailPage.ets",
+      "buildFunction": "NoticeDetailPageBuilder"
+    },
+    {
+      "name": "MemberCenterPage",
+      "pageSourceFile": "src/main/ets/pages/MemberCenterPage.ets",
+      "buildFunction": "MemberCenterPageBuilder"
+    }
+  ]
+}

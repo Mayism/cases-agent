@@ -1,0 +1,16 @@
+---
+title: openPreview打开显示预览失败
+source: https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/preview-faq-1
+category: 指南
+updated_at: 2026-03-13T00:48:53.585Z
+---
+
+# openPreview打开显示预览失败
+
+Preview Kit的[openPreview](https://developer.huawei.com/consumer/cn/doc/harmonyos-references/preview-arkts#section144826162913)接口在传入文件预览信息时，当前仅支持传入文件的[uri](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/user-file-uri-intro)，不支持传入文件的路径。
+
+如果调用openPreview接口后，显示预览失败，请检查传入的是否为uri并且检查传入的uri是否存在。
+
+---
+
+*来源: https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/preview-faq-1*

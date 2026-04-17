@@ -1,0 +1,32 @@
+---
+title: 基础API迁移指导
+source: https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/cannkit-basic-api
+category: 指南
+updated_at: 2026-03-24T11:03:13.234Z
+---
+
+# 基础API迁移指导
+
+-   **[L2 Cache](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/cannkit-basic-l2cache)**  
+    
+-   **[数据类型](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/cannkit-basic-datatype)**  
+    
+-   **[原子操作](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/cannkit-basic-atomic)**  
+    
+-   **[同步控制](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/cannkit-basic-sync)**  
+    
+-   **[矩阵计算](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/cannkit-basic-matrix-computation)**  
+    
+-   **[数据搬运](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/cannkit-basic-datacopy)**  
+    
+-   **[资源管理](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/cannkit-basic-resource-management)**  
+    
+-   **[系统变量](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/cannkit-basic-system-var)**  
+    
+-   **[Kernel Tiling](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/cannkit-basic-kernel-tiling)**  
+    
+-   **[SuperKernel](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/cannkit-basic-superkernel)**
+
+---
+
+*来源: https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/cannkit-basic-api*

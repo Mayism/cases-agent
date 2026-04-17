@@ -1,0 +1,16 @@
+{
+  "name": "home",
+  "version": "1.0.0",
+  "description": "Please describe the basic information.",
+  "main": "Index.ets",
+  "author": "",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "commonlib": 'file:../../commons/commonlib',
+    "network": 'file:../../commons/network',
+    "base_ui": 'file:../../components/base_ui',
+    "featured_recipes": 'file:../../components/featured_recipes',
+    "home_search": "file:../../components/home_search",
+    "personal_homepage": "file:../../components/personal_homepage"
+  }
+}

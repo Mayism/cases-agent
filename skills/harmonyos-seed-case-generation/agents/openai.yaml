@@ -1,0 +1,4 @@
+interface:
+  display_name: "HarmonyOS 种子用例生成"
+  short_description: "按当前种子规范生成或扩展测试用例种子"
+  default_prompt: "根据当前仓库的种子规范注释与现有范式，生成新的 HarmonyOS 测试用例种子，并在需要时运行 case_generation_agent.py 产出 test_cases。"

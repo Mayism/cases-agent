@@ -1,0 +1,34 @@
+{
+  "routerMap": [
+    {
+      "name": "HomePage",
+      "pageSourceFile": "src/main/ets/pages/HomePage.ets",
+      "buildFunction": "HomePageBuilder"
+    },
+    {
+      "name": "NewsSearch",
+      "pageSourceFile": "src/main/ets/pages/NewsSearch.ets",
+      "buildFunction": "NewsSearchBuilder"
+    },
+    {
+      "name": "NewsPost",
+      "pageSourceFile": "src/main/ets/pages/NewsPost.ets",
+      "buildFunction": "NewsPostBuilder"
+    },
+    {
+      "name": "NewsPublishSelect",
+      "pageSourceFile": "src/main/ets/pages/NewsPublishSelect.ets",
+      "buildFunction": "NewsPublishSelectBuilder"
+    },
+    {
+      "name": "VideoPreview",
+      "pageSourceFile": "src/main/ets/pages/VideoPreview.ets",
+      "buildFunction": "VideoPreviewBuilder"
+    },
+    {
+      "name": "ENewsPage",
+      "pageSourceFile": "src/main/ets/pages/ENewsPage.ets",
+      "buildFunction": "ENewsPageBuilder"
+    }
+  ]
+}

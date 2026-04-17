@@ -1,0 +1,27 @@
+---
+title: 能否通过httpResponse的result拿到一个加密内容的数据
+source: https://developer.huawei.com/consumer/cn/doc/harmonyos-faqs/faqs-network-43
+category: FAQ
+updated_at: 2026-03-13T04:59:09.293Z
+---
+
+# 能否通过httpResponse的result拿到一个加密内容的数据
+
+使用HTTP请求传递加密数据，可以在result中获取到结果。
+
+HTTP请求根据响应头中content-type类型返回对应的响应格式内容，若HttpRequestOptions无expectDataType字段，按如下规则返回：
+
+-   application/json：返回JSON格式的字符串。
+-   application/octet-stream：ArrayBuffer。
+-   image：ArrayBuffer。
+-   其他：string。
+
+若HttpRequestOption有expectDataType字段，开发者需传入与服务器返回类型相同的数据类型。
+
+**参考链接**
+
+[request](https://developer.huawei.com/consumer/cn/doc/harmonyos-references/js-apis-http#request)
+
+---
+
+*来源: https://developer.huawei.com/consumer/cn/doc/harmonyos-faqs/faqs-network-43*
