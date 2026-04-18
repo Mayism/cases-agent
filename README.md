@@ -163,25 +163,41 @@ constraints:
 
 `constraints` 是用例质量的核心，决定如何验证生成结果是否符合预期。
 
-每条约束包含：
+每条约束的基础结构如下：
+
+```yaml
+constraints:
+  - name: 首页必须接入 MapKit 地图组件并将地图作为景区导览主视图
+    priority: P0
+    rules:
+      - target: "**/pages/*.ets"
+        ast:
+          - type: call
+            name: MapComponent
+        llm: 检查首页是否真实使用 MapComponent 作为地图主视图
+```
+
+基础字段含义：
 
 - `name`：约束名称，直接描述“必须满足什么”
 - `priority`：`P0`、`P1`、`P2`
-- `rules`：一组具体校验规则
+- `rules`：一组具体校验规则，至少包含 1 条 rule
 
-当前约束编写建议：
+约束编写建议：
 
 - 至少有 1 条 `P0`
 - 至少有 1 条 `P1`
-- 优先用 AST 可验证的硬证据
+- 优先使用 AST 可验证的硬证据
 - 只在 AST 不足以表达业务意图时补充 `llm`
 - 已知目标页面时，`target` 要尽量收窄
 
 ### 5. AST 约束规则说明
 
-这是最重要的部分。
+AST 规则是 `constraints.rules` 中最核心的部分，建议把这一节当成 AST 写法速查表。
 
-单条 `rule` 的结构通常如下：
+#### 5.1 单条 rule 结构
+
+单条 `rule` 通常由 `target`、`ast`、`llm` 三部分组成：
 
 ```yaml
 rules:
@@ -194,61 +210,85 @@ rules:
     llm: 检查地图组件和当前位置获取逻辑是否都已接入
 ```
 
-各字段含义：
+字段含义：
 
 - `target`：规则作用范围，通常是 glob 路径
-- `ast`：结构化语法证据列表
-- `llm`：自然语言解释，用于补充 AST 无法完全表达的语义
+- `ast`：结构化语法证据列表，用于做静态检查
+- `llm`：自然语言提示，用于补充 AST 难以完全表达的语义
 
-#### `target` 怎么写
+使用原则：
 
-推荐写法：
+- `ast` 是主证据，`llm` 是补充说明，不能反过来
+- 同一条 `rules[].ast` 下的多条 AST 规则默认是 AND 关系
+- `no_*` 类型表示“禁止出现”，适合做负向约束
+- 一条业务链路若跨多个文件层级，建议拆成多条 rule，而不是把 `target` 放得很宽
+
+#### 5.2 `target` 怎么写
+
+常见写法：
 
 - `**/pages/*.ets`：校验页面层
 - `**/*.ets`：校验全工程 ArkTS 文件
 - `**/module.json5`：校验模块配置
+- `**/app.json5`：校验应用配置
 - `**/EntryAbility.ets`：校验特定入口文件
 
-编写原则：
+编写建议：
 
-- 页面明确时，不要偷懒写太宽的 `**/*.ets`
+- 页面明确时，不要偷懒写成很宽的 `**/*.ets`
 - 配置类规则尽量直接指向 `module.json5`、`app.json5`
-- 同一条业务链路如果落在不同层，可以拆成多条 rule
+- 如果同一目标分别落在页面、模型、配置层，拆成多条 rule 更容易定位问题
 
-#### `ast` 怎么写
+#### 5.3 AST 类型一览
 
-`ast` 类型规则建议以 [skills/constraint-score-review/SKILL.md](</E:/repo/cases-agent/skills/constraint-score-review/SKILL.md:137>) 为准。  
-每条 AST 规则本质上是在描述“目标文件里必须出现什么结构”或“不能出现什么结构”。
+`ast` 类型建议以 [skills/constraint-score-review/SKILL.md](</E:/repo/cases-agent/skills/constraint-score-review/SKILL.md:136>) 为准。每条 AST 规则本质上都在描述：目标文件里“必须出现什么结构”或“不能出现什么结构”。
 
-当前规范中的 AST 类型包括：
+| type | 含义 | 常用字段 | 示例 |
+|------|------|------|------|
+| `decorator` | 存在指定装饰器 | `name` | `{type: decorator, name: ComponentV2}` |
+| `no_decorator` | 不存在指定装饰器 | `name` | `{type: no_decorator, name: State}` |
+| `call` | 存在指定函数或组件调用 | `name` | `{type: call, name: ForEach}` |
+| `no_call` | 不存在指定函数调用 | `name` | `{type: no_call, name: router.push}` |
+| `property` | 存在指定属性定义 | `name` | `{type: property, name: navPathStack}` |
+| `property_access` | 存在指定属性访问 | `name` | `{type: property_access, name: id}` |
+| `variable` | 存在指定变量声明 | `name` | `{type: variable, name: navPathStack}` |
+| `import` | 存在指定导入 | `name` | `{type: import, name: model}` |
+| `no_import` | 不存在指定导入 | `name` | `{type: no_import, name: router}` |
+| `class` | 存在指定类定义 | `name` | `{type: class, name: RestaurantModel}` |
+| `method` | 存在指定方法定义 | `name` | `{type: method, name: getFilteredRestaurants}` |
+| `no_literal_number` | 不使用数字字面量作为样式属性值 | 无 | `{type: no_literal_number}` |
+| `navigation` | 存在导航到指定页面的跳转 | `target` | `{type: navigation, target: DetailPage}` |
+| `navigation_with_params` | 存在带参数的导航跳转 | 无 | `{type: navigation_with_params}` |
 
-- `decorator`：存在指定装饰器，例如 `@ComponentV2`
-- `no_decorator`：不存在指定装饰器，例如禁止 `@State`
-- `call`：存在指定函数或组件调用
-- `no_call`：不存在指定函数调用
-- `property`：存在指定属性定义
-- `property_access`：存在指定属性访问
-- `variable`：存在指定变量声明
-- `import`：存在指定导入
-- `no_import`：不存在指定导入
-- `class`：存在指定类定义
-- `method`：存在指定方法定义
-- `navigation`：存在导航跳转到指定页面
-- `navigation_with_params`：存在带参数的导航跳转
+字段选择规则：
 
-字段使用方式要注意：
-
-- 多数类型使用 `name`
+- 大多数 AST 类型使用 `name`
 - `navigation` 使用 `target`
-- `no_literal_number` 通常不需要额外字段
+- `no_literal_number`、`navigation_with_params` 一般不需要额外字段
 
-推荐把它理解成一组“结构化命中条件”：
+推荐优先使用下面这几类，因为最常见、也最容易稳定复核：
 
-- 同一条 `rules[].ast` 下的多条 AST 规则默认是 AND 关系
-- 也就是写了几条，就要求几条都能命中
-- `no_*` 类型表示“禁止出现”，适合做负向约束
+- `call`
+- `decorator`
+- `no_decorator`
+- `property_access`
+- `import`
+- `no_import`
+- `navigation`
 
-常见示例如下。
+#### 5.4 AST 规则怎么落地写
+
+写 AST 时优先选择“可落地、可观察、可定位”的证据：
+
+- 优先写真实 API、组件名、装饰器名、导航目标名
+- 先写最小闭环证据，再用 `llm` 补业务语义
+- 需要禁止旧实现时，优先使用 `no_call`、`no_decorator`、`no_import`
+- 需要表达数据访问链路时，优先使用 `property_access`
+- 需要表达代码结构已存在时，可用 `class`、`method`、`variable`
+- 需要表达页面跳转语义时，优先使用 `navigation` 或 `navigation_with_params`
+- 避免只写抽象业务口号，例如“实现地图功能”“支持用户定位”
+
+常见写法示例：
 
 存在组件调用：
 
@@ -257,8 +297,6 @@ ast:
   - type: call
     name: MapComponent
 ```
-
-含义：要求目标文件中出现 `MapComponent(...)` 这类调用证据。
 
 存在多个关键调用：
 
@@ -269,8 +307,6 @@ ast:
   - type: call
     name: getCurrentLocation
 ```
-
-含义：要求同时出现权限申请与当前位置获取两个关键调用。
 
 存在装饰器，且禁止旧状态装饰器：
 
@@ -284,8 +320,6 @@ ast:
     name: Link
 ```
 
-含义：要求页面使用 V2 组件体系，同时禁止继续使用旧状态装饰器。
-
 检查属性访问：
 
 ```yaml
@@ -293,8 +327,6 @@ ast:
   - type: property_access
     name: id
 ```
-
-含义：要求存在诸如 `item.id`、`model.id` 这类属性访问证据，常用于校验稳定 key、主键字段或数据访问链路。
 
 检查导入：
 
@@ -306,8 +338,6 @@ ast:
     name: router
 ```
 
-含义：要求引入指定模块，同时禁止继续依赖某个旧模块。
-
 检查类和方法：
 
 ```yaml
@@ -318,8 +348,6 @@ ast:
     name: getFilteredRestaurants
 ```
 
-含义：要求工程中存在指定类定义和对应方法实现。
-
 检查导航：
 
 ```yaml
@@ -328,40 +356,12 @@ ast:
     target: ScenicMapPage
 ```
 
-含义：要求存在到指定页面的导航目标。
-
 检查带参数导航：
 
 ```yaml
 ast:
   - type: navigation_with_params
 ```
-
-含义：要求存在携带参数的导航行为，常用于详情页、编辑页、结果页跳转。
-
-推荐优先采用下面这几类：
-
-- `call`
-- `decorator`
-- `no_decorator`
-- `property_access`
-- `import`
-- `no_import`
-- `navigation`
-
-这几类在当前仓库里最常见，也最容易被稳定复核。
-
-#### AST 规则编写建议
-
-- AST 要写“可落地、可观察、可定位”的证据，不要写抽象目标
-- 先写最小闭环证据，再用 `llm` 补业务语义
-- 如果一个目标需要多个独立证据，建议拆成多条 rule 或多条 constraint，便于定位失败原因
-- `ast` 中优先放真实 API、组件名、装饰器名、导航目标名
-- 避免只写业务口号，例如“实现地图功能”“支持用户定位”
-- 需要禁止旧实现时，优先使用 `no_call`、`no_decorator`、`no_import`
-- 需要表达“数据访问链路”时，优先使用 `property_access`
-- 需要表达“代码结构已存在”时，可用 `class`、`method`、`variable`
-- 需要表达“页面跳转语义”时，优先使用 `navigation` 或 `navigation_with_params`
 
 推荐写法：
 
