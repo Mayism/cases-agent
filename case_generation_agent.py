@@ -2,17 +2,20 @@ import argparse
 import os
 import re
 import shutil
+from collections import defaultdict
 from pathlib import Path
 
 import yaml
 
 
 BASE_DIR = Path(__file__).resolve().parent
-SEED_CATALOG_PATH = BASE_DIR / "data" / "seeds" / "seed_catalogs.yaml"
+CASE_SPECS_DIR = BASE_DIR / "data" / "cases"
 TEMPLATES_DIR = BASE_DIR / "resources" / "templates"
 STARTER_PROJECTS_DIR = BASE_DIR / "resources" / "starter_projects"
-EMPTY_PROJECT_DIR = STARTER_PROJECTS_DIR / "empty_hos_project"
+EMPTY_PROJECT_DIR = STARTER_PROJECTS_DIR / "empty_atomic_project"
 OUTPUT_BASE_DIR = BASE_DIR / "output" / "test_cases"
+
+ALLOWED_SCENARIOS = {"requirement", "bug_fix", "full_generation"}
 
 SCENARIO_PREFIX_MAP = {
     "bug_fix": "BUGFIX",
@@ -21,21 +24,9 @@ SCENARIO_PREFIX_MAP = {
 }
 
 OUTPUT_REQUIREMENTS_MAP = {
-    "requirement": "请基于 original_project 完成需求实现，保留现有首页，并说明新增页面、组件和导航链路。",
-    "full_generation": "请从零完成完整工程生成，并说明新增了哪些文件、主要实现内容及最终效果。",
+    "requirement": "请基于 original_project 完成需求实现，并说明新增页面、组件和导航链路。",
+    "full_generation": "请从零完成完整工程生成，并说明新增文件、主要实现内容及最终效果。",
 }
-
-
-def load_catalogs() -> dict:
-    if not SEED_CATALOG_PATH.exists():
-        raise FileNotFoundError(f"未找到种子配置文件: {SEED_CATALOG_PATH}")
-
-    with SEED_CATALOG_PATH.open("r", encoding="utf-8") as file:
-        data = yaml.safe_load(file) or {}
-
-    if not isinstance(data, dict):
-        raise ValueError("seed_catalogs.yaml 格式无效，顶层必须是对象。")
-    return data
 
 
 def get_next_case_number(scenario: str) -> int:
@@ -48,6 +39,23 @@ def get_next_case_number(scenario: str) -> int:
         if entry.is_dir() and re.fullmatch(r"\d+", entry.name):
             max_num = max(max_num, int(entry.name))
     return max_num + 1
+
+
+def find_harmonyos_project_root(template_dir: Path | None) -> Path | None:
+    if not template_dir or not template_dir.is_dir():
+        return None
+
+    if (template_dir / "entry" / "src" / "main" / "ets").is_dir():
+        return template_dir
+
+    for root, _dirs, _files in os.walk(template_dir):
+        current = Path(root)
+        depth = len(current.relative_to(template_dir).parts)
+        if depth > 3:
+            continue
+        if (current / "entry" / "src" / "main" / "ets").is_dir():
+            return current
+    return None
 
 
 def resolve_template_project(template_project: str | None) -> Path | None:
@@ -73,7 +81,6 @@ def resolve_template_project(template_project: str | None) -> Path | None:
 
 
 def resolve_starter_project(starter_kind: str | None) -> Path | None:
-    """解析 starter_kind 对应的起始工程目录"""
     if not starter_kind or not isinstance(starter_kind, str):
         return None
 
@@ -90,41 +97,65 @@ def resolve_starter_project(starter_kind: str | None) -> Path | None:
     return None
 
 
-def find_harmonyos_project_root(template_dir: Path | None) -> Path | None:
-    if not template_dir or not template_dir.is_dir():
-        return None
+def load_case_spec(path: Path) -> dict:
+    with path.open("r", encoding="utf-8") as file:
+        data = yaml.safe_load(file) or {}
 
-    if (template_dir / "entry" / "src" / "main" / "ets").is_dir():
-        return template_dir
+    if not isinstance(data, dict):
+        raise ValueError(f"Case spec must be a mapping: {path}")
 
-    for root, _dirs, _files in os.walk(template_dir):
-        current = Path(root)
-        depth = len(current.relative_to(template_dir).parts)
-        if depth > 3:
-            continue
-        if (current / "entry" / "src" / "main" / "ets").is_dir():
-            return current
-    return None
+    case_meta = data.get("case")
+    if not isinstance(case_meta, dict):
+        raise ValueError(f"Case spec missing top-level 'case' mapping: {path}")
+
+    scenario = case_meta.get("scenario")
+    if scenario not in ALLOWED_SCENARIOS:
+        raise ValueError(f"Unsupported scenario in {path}: {scenario}")
+
+    return data
 
 
-def resolve_source_dir(seed: dict) -> Path:
-    # 优先检查 template_project
-    template_path = resolve_template_project(seed.get("template_project"))
+def resolve_case_spec_paths(spec: str | None = None, spec_dir: str | None = None) -> list[Path]:
+    if spec and spec_dir:
+        raise ValueError("--spec and --spec-dir cannot be used together")
+
+    if spec:
+        path = Path(spec).resolve()
+        if not path.is_file():
+            raise FileNotFoundError(f"Case spec file not found: {path}")
+        return [path]
+
+    base_dir = Path(spec_dir).resolve() if spec_dir else CASE_SPECS_DIR
+    if not base_dir.exists():
+        raise FileNotFoundError(f"Case spec directory not found: {base_dir}")
+    if not base_dir.is_dir():
+        raise NotADirectoryError(f"Case spec path is not a directory: {base_dir}")
+
+    return sorted(path for path in base_dir.rglob("*.yaml") if path.is_file())
+
+
+def get_case_meta(spec: dict) -> dict:
+    case_meta = spec.get("case")
+    if not isinstance(case_meta, dict):
+        raise ValueError("Case spec missing 'case' mapping")
+    return case_meta
+
+
+def resolve_source_dir(case_meta: dict) -> Path:
+    template_path = resolve_template_project(case_meta.get("template_project"))
     if template_path:
         project_root = find_harmonyos_project_root(template_path)
         if project_root:
             return project_root
 
-    # 其次检查 starter_kind（用于 bug_fix 场景的预置缺陷工程）
-    starter_path = resolve_starter_project(seed.get("starter_kind"))
+    starter_path = resolve_starter_project(case_meta.get("starter_kind"))
     if starter_path:
         return starter_path
 
-    # 最后使用空工程
     if EMPTY_PROJECT_DIR.is_dir():
         return EMPTY_PROJECT_DIR
 
-    raise FileNotFoundError(f"未找到默认空工程目录: {EMPTY_PROJECT_DIR}")
+    raise FileNotFoundError(f"Default empty project directory not found: {EMPTY_PROJECT_DIR}")
 
 
 def format_rules(constraint: dict) -> list[dict]:
@@ -150,16 +181,13 @@ def format_rules(constraint: dict) -> list[dict]:
     return formatted
 
 
-def build_bug_fix_prompt(seed: dict, has_template: bool, has_starter: bool) -> str:
-    """构建 bug_fix 场景的 prompt"""
-    base_prompt = str(seed.get("input", "")).strip()
-    # 如果有模板或 starter_project，直接返回原始 prompt
+def build_bug_fix_prompt(case_meta: dict, has_template: bool, has_starter: bool) -> str:
+    base_prompt = str(case_meta.get("input", "")).strip()
     if has_template or has_starter:
         return base_prompt
 
-    # 否则添加构造场景的提示
-    problem_statement = str(seed.get("problem_statement", "")).strip()
-    fix_targets = seed.get("fix_targets")
+    problem_statement = str(case_meta.get("problem_statement", "")).strip()
+    fix_targets = case_meta.get("fix_targets")
     fix_lines = []
     if isinstance(fix_targets, list):
         fix_lines = [str(item).strip() for item in fix_targets if str(item).strip()]
@@ -174,8 +202,22 @@ def build_bug_fix_prompt(seed: dict, has_template: bool, has_starter: bool) -> s
     return "\n".join(parts)
 
 
-def build_output_requirements(seed: dict, scenario: str, has_template: bool, has_starter: bool) -> str:
-    """构建输出要求"""
+def build_case_prompt(case_meta: dict, scenario: str, has_template: bool, has_starter: bool) -> str:
+    custom_prompt = str(case_meta.get("prompt", "")).strip()
+    if custom_prompt:
+        return custom_prompt
+
+    if scenario == "bug_fix":
+        return build_bug_fix_prompt(case_meta, has_template, has_starter)
+
+    return str(case_meta.get("input", "")).strip()
+
+
+def build_output_requirements(case_meta: dict, scenario: str, has_template: bool, has_starter: bool) -> str:
+    explicit = str(case_meta.get("output_requirements", "")).strip()
+    if explicit:
+        return explicit
+
     if scenario == "bug_fix":
         if has_template or has_starter:
             return "请基于 original_project 修复缺陷，并说明根因、修复点和修改文件。"
@@ -187,8 +229,10 @@ def build_output_requirements(seed: dict, scenario: str, has_template: bool, has
     )
 
 
-def build_case_content(seed: dict, scenario: str, case_num: str) -> dict:
-    raw_constraints = seed.get("constraints", [])
+def build_case_content(spec: dict, case_num: str) -> dict:
+    case_meta = get_case_meta(spec)
+    scenario = case_meta.get("scenario")
+    raw_constraints = spec.get("constraints", [])
     formatted_constraints = []
 
     for index, constraint in enumerate(raw_constraints, start=1):
@@ -216,54 +260,62 @@ def build_case_content(seed: dict, scenario: str, case_num: str) -> dict:
         formatted_constraints.append(item)
 
     if not formatted_constraints:
-        raise ValueError(f"seed {seed.get('seed_id', 'unknown')} 没有可用约束。")
+        case_id = case_meta.get("id", "unknown")
+        raise ValueError(f"case {case_id} has no usable constraints")
 
-    # 检查是否有模板或 starter_project
-    has_template = bool(resolve_template_project(seed.get("template_project")))
-    has_starter = bool(resolve_starter_project(seed.get("starter_kind")))
-
-    prompt = seed.get("input", "")
-    if scenario == "bug_fix":
-        prompt = build_bug_fix_prompt(seed, has_template, has_starter)
+    has_template = bool(resolve_template_project(case_meta.get("template_project")))
+    has_starter = bool(resolve_starter_project(case_meta.get("starter_kind")))
 
     return {
         "case": {
             "id": f"{scenario}_{case_num}",
             "scenario": scenario,
-            "title": seed.get("title", ""),
-            "prompt": prompt,
-            "output_requirements": build_output_requirements(seed, scenario, has_template, has_starter),
+            "title": case_meta.get("title", ""),
+            "prompt": build_case_prompt(case_meta, scenario, has_template, has_starter),
+            "output_requirements": build_output_requirements(case_meta, scenario, has_template, has_starter),
         },
         "constraints": formatted_constraints,
     }
 
 
-def generate_cases(clean: bool = False) -> int:
-    catalogs = load_catalogs()
+def group_specs_by_scenario(spec_paths: list[Path]) -> dict[str, list[Path]]:
+    grouped: dict[str, list[Path]] = defaultdict(list)
+    for path in spec_paths:
+        spec = load_case_spec(path)
+        scenario = get_case_meta(spec).get("scenario")
+        grouped[scenario].append(path)
+
+    return {scenario: sorted(paths) for scenario, paths in grouped.items()}
+
+
+def generate_cases(clean: bool = False, spec: str | None = None, spec_dir: str | None = None) -> int:
+    spec_paths = resolve_case_spec_paths(spec=spec, spec_dir=spec_dir)
+    grouped_specs = group_specs_by_scenario(spec_paths)
     OUTPUT_BASE_DIR.mkdir(parents=True, exist_ok=True)
     total_generated = 0
 
-    for scenario, seeds in catalogs.items():
-        if not isinstance(seeds, list):
-            continue
+    for scenario in sorted(grouped_specs):
+        paths = grouped_specs[scenario]
+        scenario_dir = OUTPUT_BASE_DIR / scenario
+
+        if clean and scenario_dir.exists():
+            shutil.rmtree(scenario_dir)
 
         next_num = 1 if clean else get_next_case_number(scenario)
 
-        for seed in seeds:
+        for spec_path in paths:
             case_num = f"{next_num:03d}"
-            target_dir = OUTPUT_BASE_DIR / scenario / case_num
+            target_dir = scenario_dir / case_num
             case_file_path = target_dir / "case.yaml"
 
-            if clean and target_dir.exists():
-                shutil.rmtree(target_dir)
-
-            if case_file_path.exists():
-                print(f"跳过已存在用例: {case_file_path.relative_to(BASE_DIR)}")
+            spec_data = load_case_spec(spec_path)
+            case_meta = get_case_meta(spec_data)
+            if case_file_path.exists() and not clean:
+                print(f"跳过已存在用例 {case_file_path.relative_to(BASE_DIR)}")
                 next_num += 1
                 continue
-
-            source_dir = resolve_source_dir(seed)
-            case_content = build_case_content(seed, scenario, case_num)
+            source_dir = resolve_source_dir(case_meta)
+            case_content = build_case_content(spec_data, case_num)
 
             target_dir.mkdir(parents=True, exist_ok=True)
             original_project_dir = target_dir / "original_project"
@@ -282,7 +334,7 @@ def generate_cases(clean: bool = False) -> int:
 
             print(
                 f"已生成 {case_file_path.relative_to(BASE_DIR)} "
-                f"(seed={seed.get('seed_id', 'unknown')}, constraints={len(case_content['constraints'])})"
+                f"(spec={case_meta.get('id', spec_path.stem)}, constraints={len(case_content['constraints'])})"
             )
             total_generated += 1
             next_num += 1
@@ -292,11 +344,19 @@ def generate_cases(clean: bool = False) -> int:
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="根据种子配置批量生成 HarmonyOS 测试用例。")
+    parser = argparse.ArgumentParser(description="根据 case spec 批量生成 HarmonyOS 测试用例。")
     parser.add_argument(
         "--clean",
         action="store_true",
-        help="生成前删除目标 case 目录中已存在的同编号内容。",
+        help="生成前删除目标场景目录中已存在的内容。",
+    )
+    parser.add_argument(
+        "--spec",
+        help="只生成单个 case spec 文件。",
+    )
+    parser.add_argument(
+        "--spec-dir",
+        help="批量读取 case spec 目录，默认使用 data/cases。",
     )
     return parser.parse_args()
 
@@ -304,7 +364,7 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     args = parse_args()
     print("开始生成测试用例...")
-    generate_cases(clean=args.clean)
+    generate_cases(clean=args.clean, spec=args.spec, spec_dir=args.spec_dir)
 
 
 if __name__ == "__main__":

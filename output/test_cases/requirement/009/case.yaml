@@ -1,41 +1,86 @@
 case:
   id: requirement_009
   scenario: requirement
-  title: 实现新闻资讯元服务首页接入横幅广告服务需求
-  prompt: 这是一个增量开发需求。基于当前已有的新闻资讯元服务工程，继续扩展首页信息流商业化能力，不要重做现有首页新闻列表、焦点轮播和详情阅读链路。围绕“焦点新闻浏览→横幅广告曝光→继续阅读详情”构建完整首页体验：在首页首屏焦点内容区域或信息流固定广告位接入 Ads Kit 横幅广告，广告样式需与现有资讯卡片风格协调；广告加载成功时可稳定展示，加载失败时需优雅降级为原有内容占位或直接收起，不影响新闻浏览；点击广告后返回首页时需要保留原有阅读上下文与滚动位置。广告能力需要封装为独立组件或服务，复用现有刷新和列表结构，保持元服务轻量化。
-  output_requirements: 请直接在当前工程中修改代码并完成需求实现，页面需可编译，保留现有首页与详情阅读链路，并在回复中说明新增的广告组件、页面改动和关键配置文件。
+  title: 新闻模板集成Location Kit自动定位功能
+  prompt: 在现有的新闻元服务模板（NewsTemplate）基础上，集成Location Kit实现自动定位当前位置功能。需要完成以下工作：1. 在首页标题栏显示当前位置信息；2.
+    页面加载时自动获取设备位置；3. 支持手动点击刷新位置；4. 使用模拟数据展示城市名称（因原子化服务不支持逆地理编码）；5. 正确处理定位权限请求流程。
+  output_requirements: 请基于 original_project 完成需求实现，并说明新增页面、组件和导航链路。
 constraints:
-  - id: HM-REQ-009-01
-    name: 首页必须在焦点区或资讯流中实际接入横幅广告位，不能只放静态图片占位
-    description: 首页必须在焦点区或资讯流中实际接入横幅广告位，不能只放静态图片占位
-    priority: P0
-    rules:
-      - target: '**/*.ets'
-        ast:
-          - type: call
-            name: AutoAdComponent
-        llm: 检查工程是否真正使用 Ads Kit 横幅广告能力，并将广告位接入首页焦点区或资讯流，而不是仅使用本地图片或普通 Swiper 占位
-  - id: HM-REQ-009-02
-    name: 广告加载失败、关闭或无填充时必须优雅降级，不能破坏原有新闻浏览链路
-    description: 广告加载失败、关闭或无填充时必须优雅降级，不能破坏原有新闻浏览链路
-    priority: P1
-    rules:
-      - target: '**/*.ets'
-        llm: 检查是否处理了广告加载失败、关闭或无填充场景，并保证首页新闻列表、下拉刷新和详情阅读流程仍可正常使用
-  - id: HM-REQ-009-03
-    name: 广告逻辑必须独立封装为组件或服务，并在现有首页结构上增量接入
-    description: 广告逻辑必须独立封装为组件或服务，并在现有首页结构上增量接入
-    priority: P1
-    rules:
-      - target: '**/*.ets'
-        ast:
-          - type: file_exists
-            name: '**/*Ad*.ets'
-        llm: 检查是否将广告请求、展示和状态回调封装在独立组件或服务中，而不是散落在首页页面内大段堆砌实现
-  - id: HM-REQ-009-04
-    name: 必须保留现有新闻首页焦点轮播和信息流主体结构，采用增量方式完成商业化接入
-    description: 必须保留现有新闻首页焦点轮播和信息流主体结构，采用增量方式完成商业化接入
-    priority: P1
-    rules:
-      - target: '**/Home*.ets'
-        llm: 检查是否保留了现有新闻首页的焦点轮播、资讯流和详情跳转主链路，并在此基础上增量插入横幅广告位
+- id: HM-REQ-009-01
+  name: LocationUtil工具类必须正确实现
+  priority: P0
+  rules:
+  - target: '**/commonLib/src/main/ets/utils/LocationUtil.ets'
+    ast:
+    - type: class
+      name: LocationUtil
+    - type: method
+      name: getCurrentLocation
+    - type: method
+      name: checkLocationPermission
+    - type: method
+      name: requestLocationPermission
+    llm: LocationUtil类必须包含获取当前位置、检查权限、请求权限的核心方法
+  description: LocationUtil工具类必须正确实现
+- id: HM-REQ-009-02
+  name: 首页必须集成位置显示功能
+  priority: P0
+  rules:
+  - target: '**/home/src/main/ets/pages/HomePage.ets'
+    ast:
+    - type: import
+      name: LocationUtil
+    - type: call
+      name: autoLocate
+    llm: 首页必须导入LocationUtil并在页面加载时调用自动定位方法
+  description: 首页必须集成位置显示功能
+- id: HM-REQ-009-03
+  name: HomePageVM必须包含位置状态管理
+  priority: P0
+  rules:
+  - target: '**/home/src/main/ets/viewModels/HomePageVM.ets'
+    ast:
+    - type: decorator
+      name: '@Trace'
+    - type: property
+      name: currentCity
+    - type: property
+      name: isLocating
+    - type: method
+      name: autoLocate
+    llm: HomePageVM必须使用@Trace管理位置相关状态（currentCity、isLocating），并实现autoLocate方法
+  description: HomePageVM必须包含位置状态管理
+- id: HM-REQ-009-04
+  name: 位置权限配置必须正确
+  priority: P1
+  rules:
+  - target: '**/entry/src/main/module.json5'
+    llm: module.json5中必须配置ohos.permission.APPROXIMATELY_LOCATION和ohos.permission.LOCATION权限
+  description: 位置权限配置必须正确
+- id: HM-REQ-009-05
+  name: 定位请求配置必须符合API规范
+  priority: P1
+  rules:
+  - target: '**/commonLib/src/main/ets/utils/LocationUtil.ets'
+    ast:
+    - type: call
+      name: geoLocationManager.getCurrentLocation
+    llm: SingleLocationRequest必须包含locatingTimeoutMs和locatingPriority两个必填字段
+  description: 定位请求配置必须符合API规范
+- id: HM-REQ-009-06
+  name: 原子化服务约束必须遵守
+  priority: P1
+  rules:
+  - target: '**/commonLib/src/main/ets/utils/LocationUtil.ets'
+    llm: 由于原子化服务不支持getAddressesFromLocation逆地理编码API，需使用getMockGeoAddress方法根据坐标范围返回模拟城市数据
+  description: 原子化服务约束必须遵守
+- id: HM-REQ-009-07
+  name: commonLib必须导出LocationUtil
+  priority: P1
+  rules:
+  - target: '**/commonLib/Index.ets'
+    ast:
+    - type: export
+      name: LocationUtil
+    llm: commonLib的Index.ets必须导出LocationUtil类和相关接口类型
+  description: commonLib必须导出LocationUtil

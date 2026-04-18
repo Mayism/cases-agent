@@ -1,0 +1,78 @@
+case:
+  id: requirement_004
+  scenario: requirement
+  title: 餐厅管理后台接入华为账号元服务静默登录
+  prompt: |
+    这是一个元服务登录接入类需求。按照元服务静默登录指导为该餐厅管理后台元服务接入华为账号静默登录能力，保持“餐厅管理后台、面向 B 端商家、完成身份校验后展示商家信息”的业务场景不变，构建完整首屏鉴权与主页链路。
+
+    业务场景：餐厅管理后台面向 B 端商家，商家打开元服务后应自动完成身份校验，校验通过后进入主页并展示商家身份信息。具体要求如下：
+
+    1. 首屏进入后自动触发华为账号静默登录，禁止使用 LoginWithHuaweiIDButton、普通登录按钮或显式登录页，不得在界面中出现“登录”“注册”“退出登录”“注销账号”等文案。
+    2. 鉴权过程中允许展示中性状态提示，例如“身份校验中”“正在获取商家信息”，完成后通过 Navigation + NavPathStack 进入或切换到主页，禁止使用旧版 router。
+    3. 主页顶部展示当前商家的头像和昵称（通过 Account Kit 静默登录结果获取），下方展示业务功能入口卡片占位，例如“订单管理”“菜品管理”“经营数据”。
+    4. 静默登录失败、未授权或信息拉取失败时，页面需提供合规兜底状态与重试能力，例如“重新获取商家身份”“稍后重试”，但仍不得出现显式登录/退出登录相关表述。
+    5. 整体使用 V2 状态管理（@ComponentV2、@Local、@Param 等），禁止使用旧版 @State、@Link、@Prop、@ObjectLink 等装饰器。
+    6. module.json5 中需补充 Account Kit 所需的 Client ID metadata（可使用占位值），并保持元服务工程配置语义正确。
+  output_requirements: 请直接在当前工程中修改代码并完成需求实现，工程需可编译，主入口保持在 entry/src/main/ets/pages/Index.ets，并在回复中说明修改了哪些文件以及元服务静默登录接入的关键实现点。
+constraints:
+  - id: HM-REQ-008-01
+    name: 必须使用 Account Kit 静默登录能力完成元服务身份校验
+    description: 首屏必须通过 Account Kit 发起静默登录，调用 silentSignIn 或等效静默鉴权链路完成商家身份校验，禁止使用 LoginWithHuaweiIDButton、普通 Button 或显式登录页替代。
+    priority: P0
+    rules:
+      - target: '**/pages/*.ets'
+        ast:
+          - type: import
+            module: '@kit.AccountKit'
+          - type: call
+            name: silentSignIn
+        llm: 检查是否从 @kit.AccountKit 导入相关能力并调用 silentSignIn 或等效静默登录接口，而不是使用 LoginWithHuaweiIDButton
+  - id: HM-REQ-008-02
+    name: 元服务界面不得出现显式登录注册退出类文案和入口
+    description: 元服务涉及账号体系时应采用静默登录，用户界面中不得出现“登录”“注册”“退出登录”“注销账号”等字样，也不应提供显式登录按钮或退出登录入口。
+    priority: P0
+    rules:
+      - target: '**/pages/*.ets'
+        llm: 检查页面文案和交互中是否避免出现“登录”“注册”“退出登录”“注销账号”等表述，且未放置显式登录按钮或退出登录按钮
+  - id: HM-REQ-008-04
+    name: 页面路由必须使用 Navigation 加 NavPathStack
+    description: 首屏鉴权态与主页切换必须使用 Navigation 和 NavPathStack 管理，禁止使用 @ohos.router 或 router 模块。
+    priority: P1
+    rules:
+      - target: '**/pages/*.ets'
+        ast:
+          - type: call
+            name: Navigation
+          - type: call
+            name: NavPathStack
+        llm: 检查是否使用 Navigation 和 NavPathStack 管理首屏鉴权态与主页路由切换，不得出现 import router
+  - id: HM-REQ-008-05
+    name: 状态管理必须统一使用 V2 装饰器体系
+    description: 所有组件必须使用 @ComponentV2，状态使用 @Local、@Param 等 V2 装饰器管理，禁止出现 @State、@Link、@Prop、@ObjectLink 等旧版装饰器。
+    priority: P1
+    rules:
+      - target: '**/pages/*.ets'
+        ast:
+          - type: decorator
+            name: ComponentV2
+        llm: 检查所有页面组件是否统一使用 V2 装饰器体系，且未出现 @State、@Link、@Prop、@ObjectLink 等旧版写法
+  - id: HM-REQ-008-06
+    name: module.json5 需配置 Client ID metadata
+    description: Account Kit 元服务静默登录需要在 module.json5 中通过 metadata 配置 Client ID（可使用占位值），否则无法完成鉴权初始化。
+    priority: P1
+    rules:
+      - target: '**/module.json5'
+        ast:
+          - type: json_key
+            name: metadata
+        llm: 检查 module.json5 是否配置了 Account Kit Client ID 相关 metadata，且配置语义符合元服务接入要求
+  - id: HM-REQ-008-07
+    name: 静默登录失败时必须提供合规兜底状态和重试能力
+    description: 当静默登录失败、未授权或信息获取失败时，页面必须提供中性的兜底提示和重试能力，例如“重新获取商家身份”“稍后重试”，但不得退化为显式登录页。
+    priority: P1
+    rules:
+      - target: '**/pages/*.ets'
+        ast:
+          - type: call
+            name: Button
+        llm: 检查是否实现了静默登录失败后的兜底状态和重试能力，且未回退为显式登录页或退出登录交互

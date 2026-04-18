@@ -1,5 +1,6 @@
-/node_modules
-/oh_modules
+**/node_modules
+**/oh_modules
+**/.preview
 /local.properties
 /.idea
 **/build
@@ -11,6 +12,4 @@
 **/.test
 /.appanalyzer
 **/oh-package-lock.json5
-**/package-lock.json
-/signature
 **/BuildProfile.ets

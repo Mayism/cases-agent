@@ -5,6 +5,11 @@
   "main": "",
   "author": "",
   "license": "",
-  "dependencies": {}
+  "dependencies": {
+    commonlib: "file:../commons/commonLib",
+    componentlib: "file:../commons/componentLib",
+    "mine": "file:../features/mine",
+    "home": "file:../features/home",
+    "video": "file:../features/video"
+  }
 }
-

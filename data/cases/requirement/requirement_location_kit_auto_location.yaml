@@ -1,0 +1,106 @@
+case:
+  id: requirement_location_kit_auto_location
+  scenario: requirement
+  title: 新闻模板集成Location Kit自动定位功能
+  input: 在现有的新闻元服务模板（NewsTemplate）基础上，集成Location Kit实现自动定位当前位置功能。需要完成以下工作：1. 在首页标题栏显示当前位置信息；2. 页面加载时自动获取设备位置；3. 支持手动点击刷新位置；4. 使用模拟数据展示城市名称（因原子化服务不支持逆地理编码）；5. 正确处理定位权限请求流程。
+  template_project: NewsTemplate/News
+  keywords:
+    - LocationKit
+    - geoLocationManager
+    - getCurrentLocation
+    - 权限请求
+    - 自动定位
+    - "@ObservedV2"
+    - "@Trace"
+    - "@ComponentV2"
+    - 原子化服务
+  template:
+    name: NewsTemplate
+    industry: 新闻资讯
+    app_type: 原子化服务
+  existing_features:
+    - 首页展示新闻列表，包含热点新闻和本地新闻
+    - 视频模块展示新闻视频
+    - 我的模块管理账号信息
+    - 已集成华为账号登录
+    - 使用MVVM架构模式
+    - 已有PermissionUtil权限管理工具
+  new_requirement_scope:
+    - 在commonLib中新增LocationUtil位置工具类
+    - 在首页HomePage中集成位置显示组件
+    - 在HomePageVM中添加位置状态管理
+    - 配置位置权限（ohos.permission.APPROXIMATELY_LOCATION和ohos.permission.LOCATION）
+    - 实现自动定位和手动刷新功能
+  template_constraints:
+    - 保持现有首页新闻列表功能不变
+    - 使用项目现有的@ObservedV2/@Trace状态管理模式
+    - 遵循项目现有的命名规范和文件组织结构
+    - LocationUtil工具类应放在commons/commonLib/src/main/ets/utils目录下
+    - 位置显示应集成到首页标题栏组件中
+    - 原子化服务不支持逆地理编码API，需使用模拟数据或坐标范围判断
+  starter_kind: location_kit_auto_location
+constraints:
+  - name: LocationUtil工具类必须正确实现
+    priority: P0
+    rules:
+      - target: "**/commonLib/src/main/ets/utils/LocationUtil.ets"
+        ast:
+          - type: class
+            name: LocationUtil
+          - type: method
+            name: getCurrentLocation
+          - type: method
+            name: checkLocationPermission
+          - type: method
+            name: requestLocationPermission
+        llm: LocationUtil类必须包含获取当前位置、检查权限、请求权限的核心方法
+  - name: 首页必须集成位置显示功能
+    priority: P0
+    rules:
+      - target: "**/home/src/main/ets/pages/HomePage.ets"
+        ast:
+          - type: import
+            name: LocationUtil
+          - type: call
+            name: autoLocate
+        llm: 首页必须导入LocationUtil并在页面加载时调用自动定位方法
+  - name: HomePageVM必须包含位置状态管理
+    priority: P0
+    rules:
+      - target: "**/home/src/main/ets/viewModels/HomePageVM.ets"
+        ast:
+          - type: decorator
+            name: "@Trace"
+          - type: property
+            name: currentCity
+          - type: property
+            name: isLocating
+          - type: method
+            name: autoLocate
+        llm: HomePageVM必须使用@Trace管理位置相关状态（currentCity、isLocating），并实现autoLocate方法
+  - name: 位置权限配置必须正确
+    priority: P1
+    rules:
+      - target: "**/entry/src/main/module.json5"
+        llm: module.json5中必须配置ohos.permission.APPROXIMATELY_LOCATION和ohos.permission.LOCATION权限
+  - name: 定位请求配置必须符合API规范
+    priority: P1
+    rules:
+      - target: "**/commonLib/src/main/ets/utils/LocationUtil.ets"
+        ast:
+          - type: call
+            name: geoLocationManager.getCurrentLocation
+        llm: SingleLocationRequest必须包含locatingTimeoutMs和locatingPriority两个必填字段
+  - name: 原子化服务约束必须遵守
+    priority: P1
+    rules:
+      - target: "**/commonLib/src/main/ets/utils/LocationUtil.ets"
+        llm: 由于原子化服务不支持getAddressesFromLocation逆地理编码API，需使用getMockGeoAddress方法根据坐标范围返回模拟城市数据
+  - name: commonLib必须导出LocationUtil
+    priority: P1
+    rules:
+      - target: "**/commonLib/Index.ets"
+        ast:
+          - type: export
+            name: LocationUtil
+        llm: commonLib的Index.ets必须导出LocationUtil类和相关接口类型

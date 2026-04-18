@@ -1,4 +1,4 @@
 interface:
   display_name: "HarmonyOS 种子用例生成"
-  short_description: "按当前种子规范生成或扩展测试用例种子"
-  default_prompt: "根据当前仓库的种子规范注释与现有范式，生成新的 HarmonyOS 测试用例种子。完成种子文件（seed_catalogs.yaml）更新后，必须自动执行 `python case_generation_agent.py --clean` 命令产出最终的 test_cases。"
+  short_description: "按当前 case spec 规范生成或扩展测试用例"
+  default_prompt: "根据当前仓库的 case spec 规范生成新的 HarmonyOS 测试用例 spec。完成 case spec YAML 文件更新后，必须自动执行 `python case_generation_agent.py --clean` 产出最终的 test_cases。"
