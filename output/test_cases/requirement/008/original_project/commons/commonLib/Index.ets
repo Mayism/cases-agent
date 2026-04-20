@@ -10,9 +10,6 @@ export { RouterModule, NavRouterInfo, DialogInfo } from './src/main/ets/utils/Ro
 // 权限管理工具
 export { PermissionUtil } from './src/main/ets/utils/PermissionUtil';
 
-// 位置工具
-export { LocationUtil, LocationInfo, GeoAddressInfo } from './src/main/ets/utils/LocationUtil';
-
 // 格式化工具
 export { FormatUtil } from './src/main/ets/utils/FormatUtil';
 

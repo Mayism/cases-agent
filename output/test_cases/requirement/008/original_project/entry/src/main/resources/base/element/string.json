@@ -123,10 +123,6 @@
     {
       "name": "widget_display_name",
       "value": "新闻资讯"
-    },
-    {
-      "name": "location_reason",
-      "value": "用于获取当前位置以展示本地新闻"
     }
   ]
 }

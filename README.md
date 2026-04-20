@@ -40,7 +40,7 @@ cases-agent/
 │  └─ starter_projects/
 │     └─ empty_atomic_project/
 ├─ skills/
-│  └─ harmonyos-seed-case-generation/
+│  └─ harmonyos-case-generation/
 │     ├─ SKILL.md
 │     ├─ references/
 │     │  └─ source-map.md
@@ -60,7 +60,7 @@ cases-agent/
 - `resources/templates/`：可复用的行业模板工程
 - `resources/starter_projects/`：空工程或预置起始工程
 - `case_generation_agent.py`：把 case spec 生成为最终 test case
-- `skills/harmonyos-seed-case-generation/`：约束编写规范、字段映射和辅助脚本
+- `skills/harmonyos-case-generation/`：约束编写规范、字段映射和辅助脚本
 - `output/test_cases/`：生成结果目录
 
 ## 实现原理
@@ -438,16 +438,16 @@ pip install pyyaml
 ### 2. 打印模板
 
 ```bash
-python skills/harmonyos-seed-case-generation/scripts/print_case_template.py requirement
-python skills/harmonyos-seed-case-generation/scripts/print_case_template.py bug_fix
-python skills/harmonyos-seed-case-generation/scripts/print_case_template.py full_generation
+python skills/harmonyos-case-generation/scripts/print_case_template.py requirement
+python skills/harmonyos-case-generation/scripts/print_case_template.py bug_fix
+python skills/harmonyos-case-generation/scripts/print_case_template.py full_generation
 ```
 
 ### 3. 校验 case spec
 
 ```bash
-python skills/harmonyos-seed-case-generation/scripts/validate_case_specs.py data/cases
-python skills/harmonyos-seed-case-generation/scripts/validate_case_specs.py data/cases/requirement/requirement_scenic_atomic_mapkit_current_location.yaml
+python skills/harmonyos-case-generation/scripts/validate_case_specs.py data/cases
+python skills/harmonyos-case-generation/scripts/validate_case_specs.py data/cases/requirement/requirement_scenic_atomic_mapkit_current_location.yaml
 ```
 
 ### 4. 生成用例
@@ -583,6 +583,6 @@ constraints:
 如果你要新增或修改用例，建议优先维护：
 
 - `data/cases/*.yaml`
-- `skills/harmonyos-seed-case-generation/references/source-map.md`
+- `skills/harmonyos-case-generation/references/source-map.md`
 
 而不是直接手改 `output/test_cases/.../case.yaml`。

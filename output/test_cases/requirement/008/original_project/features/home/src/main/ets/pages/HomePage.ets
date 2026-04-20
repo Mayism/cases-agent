@@ -4,12 +4,9 @@ import {
   NewsTypeModel,
   NewsViewModel,
   WindowModel,
-  LocationUtil,
 } from 'commonlib';
 import { BaseTitle } from 'componentlib';
 import { HomeContentView } from '../components/HomeContentView';
-import { HomePageVM } from '../viewModels/HomePageVM';
-import { common } from '@kit.AbilityKit';
 
 
 @Builder
@@ -23,14 +20,6 @@ export struct HomePage {
   @Local tabBarArray: NewsTypeModel[] = new NewsViewModel().getDefaultTypeList();
   @Local currentIndex: number = 0;
   windowModel: WindowModel = AppStorageV2.connect(WindowModel, () => new WindowModel())!;
-  vm: HomePageVM = HomePageVM.instance;
-
-  aboutToAppear(): void {
-    // 设置位置工具的上下文
-    LocationUtil.setContext(getContext(this) as common.UIAbilityContext);
-    // 自动定位当前位置
-    this.vm.autoLocate();
-  }
 
   build() {
     Column() {
@@ -81,41 +70,8 @@ export struct HomePage {
 
   @Builder
   HomeTitleBuilder() {
-    Row() {
-      Text('首页')
-        .fontSize(24)
-        .fontWeight(FontWeight.Bold)
-      
-      // 位置显示组件
-      Row() {
-        // 使用定位符号
-        Text('\uE678')
-          .fontSize(16)
-          .fontColor($r('app.color.icon_color_level2'))
-          .fontFamily('HarmonyOS-Sans')
-        
-        Text(this.vm.currentCity)
-          .fontSize(14)
-          .fontColor($r('app.color.icon_color_level2'))
-          .margin({ left: 4 })
-          .maxLines(1)
-          .textOverflow({ overflow: TextOverflow.Ellipsis })
-        
-        // 定位加载指示器
-        if (this.vm.isLocating) {
-          LoadingProgress()
-            .width(14)
-            .height(14)
-            .color($r('app.color.icon_color_level2'))
-            .margin({ left: 4 })
-        }
-      }
-      .margin({ left: 16 })
-      .onClick(() => {
-        // 点击刷新位置
-        this.vm.refreshLocation();
-      })
-    }
-    .alignItems(VerticalAlign.Center)
+    Text('首页')
+      .fontSize(24)
+      .fontWeight(FontWeight.Bold)
   }
 }
