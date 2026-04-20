@@ -9,7 +9,7 @@ constraints:
   name: 购物车项更新需要通过可追踪的状态变更驱动
   priority: P0
   rules:
-  - target: '**/pages/*.ets'
+  - target: '**/commons/common/src/main/ets/models/StorageModel.ets'
     ast:
     - type: decorator
       name: ObservedV2
