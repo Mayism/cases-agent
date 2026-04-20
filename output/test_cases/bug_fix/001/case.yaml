@@ -21,7 +21,7 @@ constraints:
   name: 购物车列表渲染需要使用稳定key
   priority: P1
   rules:
-  - target: '**/pages/*.ets'
+  - target: '**/products/entry/src/main/ets/components/order/MyCarListComp.ets'
     ast:
     - type: call
       name: ForEach

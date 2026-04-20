@@ -256,7 +256,7 @@ rules:
 | `no_import` | 不存在指定导入 | `name` | `{type: no_import, name: router}` |
 | `class` | 存在指定类定义 | `name` | `{type: class, name: RestaurantModel}` |
 | `method` | 存在指定方法定义 | `name` | `{type: method, name: getFilteredRestaurants}` |
-| `no_literal_number` | 不使用数字字面量作为样式属性值 | 无 | `{type: no_literal_number}` |
+| `no_literal_number` | 不使用数字字面量作为样式或逻辑代码中的魔法数 | `context` | `{type: no_literal_number, context: style_property}` |
 | `navigation` | 存在导航到指定页面的跳转 | `target` | `{type: navigation, target: DetailPage}` |
 | `navigation_with_params` | 存在带参数的导航跳转 | 无 | `{type: navigation_with_params}` |
 
@@ -264,7 +264,8 @@ rules:
 
 - 大多数 AST 类型使用 `name`
 - `navigation` 使用 `target`
-- `no_literal_number`、`navigation_with_params` 一般不需要额外字段
+- `no_literal_number` 可按场景补充 `context`，例如 `style_property`、`logic_code`
+- `navigation_with_params` 一般不需要额外字段
 
 推荐优先使用下面这几类，因为最常见、也最容易稳定复核：
 

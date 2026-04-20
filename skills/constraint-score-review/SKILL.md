@@ -150,7 +150,7 @@ AST 规则用于自动化静态检查，每条规则包含 `type` 和 `name`：
 | `no_import` | 不存在指定导入 | `{type: no_import, name: router}` |
 | `class` | 存在指定类定义 | `{type: class, name: RestaurantModel}` |
 | `method` | 存在指定方法定义 | `{type: method, name: getFilteredRestaurants}` |
-| `no_literal_number` | 不使用数字字面量作为样式属性值 | `{type: no_literal_number}` |
+| `no_literal_number` | 不使用数字字面量作为样式或逻辑代码中的魔法数，可通过 `context` 指定 `style_property` 或 `logic_code` | `{type: no_literal_number, context: style_property}` |
 | `navigation` | 存在导航跳转 | `{type: navigation, target: DetailPage}` |
 | `navigation_with_params` | 存在带参数的导航跳转 | `{type: navigation_with_params}` |
 
