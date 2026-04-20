@@ -63,7 +63,7 @@ export class OrderInfo implements OrderInfoResp {
   yhqMoney: number = 0
   couponId: string = ''
   redeemedPoint: boolean = false
-   state: number = 0
+  state: number = 0
   oid: string = ''
   storeTel: string = ''
   storeName: string = ''
@@ -79,7 +79,7 @@ export class OrderInfo implements OrderInfoResp {
 // 订单列表
 @ObservedV2
 export class MyOrderInfo {
-   order: OrderInfo = new OrderInfo()
+  order: OrderInfo = new OrderInfo()
   goods: Array<OrderGoodsResp> = []
   table?: OrderTableResp
 }

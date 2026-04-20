@@ -119,27 +119,27 @@ export class StoreInfo {
 // 店铺信息
 @ObservedV2
 export class StoreInfoModel {
-  /* @Trace removed - BUG: reactive tracking disabled */ storeId: string = '';
-  /* @Trace removed - BUG: reactive tracking disabled */ tableId: string = ''
-  /* @Trace removed - BUG: reactive tracking disabled */ tableInfo: TableInfo = new TableInfo()
-  /* @Trace removed - BUG: reactive tracking disabled */ preorderTime: string = '立即就餐'
-  /* @Trace removed - BUG: reactive tracking disabled */ dinerNum: ResourceStr = ''
-  /* @Trace removed - BUG: reactive tracking disabled */ orderType: number = OrderTypeEnum.DINE_IN
-  /* @Trace removed - BUG: reactive tracking disabled */ distance: number = 0
-  /* @Trace removed - BUG: reactive tracking disabled */ isRest: boolean = false
-  /* @Trace removed - BUG: reactive tracking disabled */ qrCodeFlag: boolean = false
-  @Type(TableInfo) /* @Trace removed - BUG: reactive tracking disabled */ tableList: Array<TableInfo> = [];
-  /* @Trace removed - BUG: reactive tracking disabled */ storeInfo: StoreInfo = new StoreInfo()
-  @Type(StoreInfo) /* @Trace removed - BUG: reactive tracking disabled */ storeList: Array<StoreInfo> = []
+   storeId: string = '';
+   tableId: string = ''
+   tableInfo: TableInfo = new TableInfo()
+   preorderTime: string = '立即就餐'
+   dinerNum: ResourceStr = ''
+   orderType: number = OrderTypeEnum.DINE_IN
+   distance: number = 0
+   isRest: boolean = false
+   qrCodeFlag: boolean = false
+  @Type(TableInfo)  tableList: Array<TableInfo> = [];
+   storeInfo: StoreInfo = new StoreInfo()
+  @Type(StoreInfo)  storeList: Array<StoreInfo> = []
 }
 
 // 用户头像持久化
 @ObservedV2
 export class WindowModel {
-  /* @Trace removed - BUG: reactive tracking disabled */ windowTopHeight: number = 38.77;
-  /* @Trace removed - BUG: reactive tracking disabled */ windowBottomHeight: number = 28;
-  /* @Trace removed - BUG: reactive tracking disabled */ fullScreen: boolean = false;
-  /* @Trace removed - BUG: reactive tracking disabled */ windowStage?: window.WindowStage = undefined;
+   windowTopHeight: number = 38.77;
+   windowBottomHeight: number = 28;
+   fullScreen: boolean = false;
+   windowStage?: window.WindowStage = undefined;
 
   getWindowTopHeight(): number {
     return this.windowTopHeight || 38.77;
@@ -152,26 +152,26 @@ export class WindowModel {
 
 @ObservedV2
 export class FormCard {
-  /* @Trace removed - BUG: reactive tracking disabled */ id: number = 0
+   id: number = 0
   url: string = ''
-  /* @Trace removed - BUG: reactive tracking disabled */ orderId: string = ''
-  /* @Trace removed - BUG: reactive tracking disabled */ index: number = 0
-  /* @Trace removed - BUG: reactive tracking disabled */ isOrderJump: boolean = false
+   orderId: string = ''
+   index: number = 0
+   isOrderJump: boolean = false
 }
 
 // 购物车信息
 @ObservedV2
 export class MyCarModel {
-  /* @Trace removed - BUG: reactive tracking disabled */ myCar: MyCar = new MyCar()
-  /* @Trace removed - BUG: reactive tracking disabled */ carCheck: Array<string> = []
+   myCar: MyCar = new MyCar()
+   carCheck: Array<string> = []
 }
 
 @ObservedV2
 export class MyCar {
-  /* @Trace removed - BUG: reactive tracking disabled */ boxMoney: number = 0
-  /* @Trace removed - BUG: reactive tracking disabled */ goodsList: Array<CarGoodsInfo> = []
-  /* @Trace removed - BUG: reactive tracking disabled */ num: number = 0
-  /* @Trace removed - BUG: reactive tracking disabled */ money: number = 0
+   boxMoney: number = 0
+   goodsList: Array<CarGoodsInfo> = []
+   num: number = 0
+   money: number = 0
 
   constructor(boxMoney: number = 0, num: number = 0, money: number = 0) {
     this.boxMoney = boxMoney
@@ -202,7 +202,7 @@ export class CarGoodsInfo {
   goodsId: string = '';
   name: string = ''
   logo: string = ''
-  /* @Trace removed - BUG: reactive tracking disabled */ num: number = 0
+   num: number = 0
   specType: number = 0
   spec: string = ''
   combination: PackageSpec[] = []
@@ -237,9 +237,9 @@ export class UserInfo implements UserInfoResp {
   openId: string = ''
   unionId: string = ''
   storeId: string = ''
-  /* @Trace removed - BUG: reactive tracking disabled */ totalScore: number = 0
-  /* @Trace removed - BUG: reactive tracking disabled */ wallet: number = 0
-  /* @Trace removed - BUG: reactive tracking disabled */ userTel: string = ''
+   totalScore: number = 0
+   wallet: number = 0
+   userTel: string = ''
 
   constructor(id: string = '', name: string = '', img: string = '', openId: string = '', storeId: string = '',
     totalScore: number = 0, wallet: number = 0, unionId: string = '') {
@@ -256,9 +256,9 @@ export class UserInfo implements UserInfoResp {
 
 @ObservedV2
 export class UserInfoModel {
-  /* @Trace removed - BUG: reactive tracking disabled */ userInfo: UserInfo = new UserInfo()
-  /* @Trace removed - BUG: reactive tracking disabled */ authCode: string = ''
-  /* @Trace removed - BUG: reactive tracking disabled */ isRelative: boolean = false
+   userInfo: UserInfo = new UserInfo()
+   authCode: string = ''
+   isRelative: boolean = false
 
   getUserName(): ResourceStr {
     return this.isRelative ? this.userInfo.name : $r('app.string.no_relate')
@@ -276,15 +276,15 @@ export class UserInfoModel {
 // 用户头像持久化
 @ObservedV2
 export class UserIconModel {
-  /* @Trace removed - BUG: reactive tracking disabled */ isSaved: boolean = false
-  /* @Trace removed - BUG: reactive tracking disabled */ userIconPath: string = 'userImage.jpg'
+   isSaved: boolean = false
+   userIconPath: string = 'userImage.jpg'
 }
 
 // 分享参数
 @ObservedV2
 export class CustomShareParams {
-  /* @Trace removed - BUG: reactive tracking disabled */ id: number = 0;
-  /* @Trace removed - BUG: reactive tracking disabled */ pageName: string = '';
-  /* @Trace removed - BUG: reactive tracking disabled */ goodsId: string = '';
-  /* @Trace removed - BUG: reactive tracking disabled */ goodsName: string = '';
+   id: number = 0;
+   pageName: string = '';
+   goodsId: string = '';
+   goodsName: string = '';
 }
