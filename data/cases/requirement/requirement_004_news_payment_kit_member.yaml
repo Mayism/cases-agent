@@ -1,0 +1,92 @@
+case:
+  id: requirement_004_news_payment_kit_member
+  scenario: requirement
+  title: 实现新闻元服务接入支付Kit并完成会员订阅支付流程需求
+  input: 这是一个基于新闻元服务模板工程的增量开发需求。请在"我的"页面中增加会员服务入口，以支付 Kit 为核心支付能力，围绕"查看会员权益→选择会员套餐→发起支付→处理支付结果→会员状态更新"构建完整支付闭环。会员服务页面需要展示不同会员套餐（如月度会员、年度会员）及其权益说明，用户选择套餐后进入订单确认页面，确认后发起支付请求；支付过程中需要接入支付 Kit 的支付能力，处理支付成功、失败、取消等不同状态，支付完成后更新会员状态并展示支付结果；支付成功后，"我的"页面需要展示会员标识，用户可享受会员专属权益。整体保持元服务轻量化，使用 V2 状态管理维护会员数据、支付状态和订单信息，支付相关敏感数据需要妥善处理，不得在日志或界面中泄露支付凭证、签名密钥等安全信息。
+  template_project: resources/templates/NewsTemplate/News
+  keywords:
+    - 新闻元服务
+    - 支付Kit
+    - PaymentKit
+    - 会员订阅
+    - 支付状态
+    - 会员管理
+  existing_features:
+    - 当前 original_project 为新闻元服务模板工程，包含首页（新闻列表、新闻详情、评论）、视频（视频列表、视频播放）、我的（用户信息、我的收藏、我的评论、浏览记录、设置）三大模块
+    - 已接入账号关联功能，使用 authentication Kit 实现华为账号关联
+    - 已有基础的网络请求、路由管理、状态管理能力
+    - 尚未接入支付 Kit、会员管理能力与支付业务模块
+  new_requirement_scope:
+    - 新增会员服务入口，位于"我的"页面常用服务区域，点击后跳转会员服务页面
+    - 新增会员服务页面，展示会员套餐列表、权益说明、当前会员状态
+    - 新增订单确认页面，支持订单信息展示与支付发起
+    - 新增支付 Kit 接入，完成支付能力对接与支付流程处理
+    - 新增支付结果页面，展示支付成功/失败/取消状态并提供后续操作入口
+    - 新增会员状态管理，支持普通用户、会员用户状态流转与权益展示
+  template_constraints:
+    - 基于现有新闻元服务模板完成增量实现，保留原有首页、视频、我的三大 tab 结构
+    - 会员服务入口必须位于"我的"页面，与现有功能入口风格保持一致
+    - 不要扩展与会员支付无关的电商、社交、出行等业务模块
+    - 支付安全必须符合基础要求，不得泄露支付凭证或密钥信息
+  output_requirements: 请基于 original_project 完成会员订阅支付能力实现，并在回复中说明支付 Kit 接入方式、会员订阅流程设计、支付状态处理逻辑、会员权益展示设计以及涉及的关键页面与配置文件。
+constraints:
+  - name: 工程必须接入支付Kit并存在支付相关能力调用
+    priority: P0
+    rules:
+      - target: "**/*.ets"
+        ast:
+          - type: import
+            name: PaymentKit
+        llm: 检查工程是否真实接入支付 Kit 模块，存在支付能力相关导入或调用证据，而不是仅停留在伪代码或占位描述
+  - name: 必须存在会员服务入口与套餐选择的核心业务流程
+    priority: P0
+    rules:
+      - target: "**/mine/**/*.ets"
+        ast:
+          - type: navigation
+            target: MemberServicePage
+      - target: "**/pages/*.ets"
+        ast:
+          - type: navigation_with_params
+        llm: 检查"我的"页面是否存在会员服务入口跳转，以及会员套餐选择后携带参数的订单确认流程，确保支付链路可被完整触发
+  - name: 支付结果必须被正确处理并提供状态反馈界面
+    priority: P1
+    rules:
+      - target: "**/pages/*.ets"
+        ast:
+          - type: navigation
+            target: PaymentResultPage
+        llm: 检查是否存在支付结果页面，能够展示支付成功、失败、取消等不同状态，并提供订单详情查看或重试支付入口
+  - name: 会员状态必须使用V2状态管理并支持状态流转
+    priority: P1
+    rules:
+      - target: "**/*.ets"
+        ast:
+          - type: decorator
+            name: ObservedV2
+          - type: property
+            name: memberStatus
+        llm: 检查会员状态是否使用 V2 状态管理体系进行管理，支持普通用户、会员用户状态流转，状态变量命名符合业务语义
+  - name: 支付敏感信息安全处理不得泄露凭证密钥
+    priority: P1
+    rules:
+      - target: "**/*.ets"
+        ast:
+          - type: no_call
+            name: console.log
+        llm: 检查支付相关代码是否存在日志打印支付凭证、签名密钥、用户支付密码等敏感信息的风险行为，确保支付安全基础合规
+  - name: 工程配置必须包含支付Kit所需的基础权限与配置声明
+    priority: P1
+    rules:
+      - target: "**/module.json5"
+        llm: 检查工程配置是否补充了支付 Kit 场景所需的基础配置声明，保证支付能力链路具备运行前提
+  - name: 会员服务页面必须展示套餐列表与权益说明
+    priority: P1
+    rules:
+      - target: "**/pages/MemberServicePage.ets"
+        ast:
+          - type: component
+            name: List
+          - type: call
+            name: Text
+        llm: 检查会员服务页面是否使用 List 组件展示不同套餐选项，并包含权益说明文案，确保用户能够清晰了解会员权益

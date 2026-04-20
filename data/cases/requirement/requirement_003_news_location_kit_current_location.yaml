@@ -1,0 +1,61 @@
+case:
+  id: requirement_003_news_location_kit_current_location
+  scenario: requirement
+  title: 实现新闻资讯元服务首页接入 Location Kit 自动定位当前位置需求
+  input: 这是一个增量开发需求。基于当前已有的新闻资讯元服务模板工程，继续完善首页的本地化定位能力，不要重做现有首页新闻流、顶部焦点轮播、详情阅读和底部 Tab 主链路。围绕“进入首页→按需申请定位权限→通过 Location Kit 获取设备当前位置→在首页展示当前城市或位置状态→支持用户手动刷新定位结果”构建完整闭环。首页需要明确展示当前位置区域，可以放在标题区、头部卡片或焦点内容上方；首次进入页面时应自动尝试定位，授权成功后展示当前城市、位置摘要或本地化提示；用户点击刷新入口时能够重新触发定位；如果用户拒绝授权、系统定位服务关闭或定位失败，需要给出清晰但不阻断新闻浏览的降级提示，并允许继续浏览通用资讯内容。定位能力应尽量复用模板现有首页结构和状态管理方式，以增量方式完成实现。
+  template_project: NewsTemplate/News
+  keywords:
+    - 新闻资讯元服务
+    - Location Kit
+    - 自动定位
+    - 当前位置
+    - 当前城市
+    - 首页增量开发
+  existing_features:
+    - 当前模板已具备首页新闻流、焦点内容、详情阅读和底部 Tab 等基础资讯浏览能力
+    - 首页已有标题区、Tab 切换和列表刷新结构，适合在现有框架上增量补充定位能力
+    - 工程已经具备基础权限工具和首页 ViewModel 分层，不需要推倒重做页面结构
+  new_requirement_scope:
+    - 首页接入 Location Kit 获取设备当前位置
+    - 首页新增当前位置或当前城市展示区，并支持手动刷新定位
+    - 在权限拒绝、定位失败或系统定位关闭时提供不阻断浏览的降级提示
+    - 使用现有页面结构和 V2 状态管理维护定位状态与展示结果
+  template_constraints:
+    - 保留现有首页新闻流、焦点轮播、详情阅读和底部导航主链路
+    - 不要为了接入定位能力而重构整个首页或替换既有资讯浏览结构
+    - 定位能力应以前台可感知的增量入口接入，而不是只在后台静默获取位置
+  output_requirements: 请基于 original_project 完成首页定位能力实现，并在回复中说明当前位置展示区域放置位置、Location Kit 接入方式、权限申请逻辑、降级处理方式以及修改的关键文件。
+constraints:
+  - name: 首页必须按需申请定位权限并通过 Location Kit 获取设备当前位置
+    priority: P0
+    rules:
+      - target: "**/*.ets"
+        ast:
+          - type: call
+            name: requestPermissionsFromUser
+          - type: call
+            name: getCurrentLocation
+        llm: 检查工程是否真实完成定位权限申请与 Location Kit 定位调用，能够获取设备当前位置，而不是仅保留注释、伪代码或静态占位文案
+  - name: 首页必须展示当前位置状态并支持用户主动刷新定位结果
+    priority: P0
+    rules:
+      - target: "**/pages/HomePage.ets"
+        ast:
+          - type: call
+            name: LoadingProgress
+        llm: 检查首页是否增加了当前城市、当前位置状态或定位提示区域，并提供用户可见的手动刷新入口，而不是只在 ViewModel 中维护定位结果
+  - name: 首页 ViewModel 必须维护定位状态与城市结果的可观察数据
+    priority: P1
+    rules:
+      - target: "**/viewModels/HomePageVM.ets"
+        ast:
+          - type: decorator
+            name: Trace
+          - type: call
+            name: getCurrentLocation
+        llm: 检查首页 ViewModel 是否维护了当前城市、定位中状态、定位结果或降级状态等可观察数据，并由这些状态驱动首页展示更新
+  - name: 拒绝授权或定位失败时不得阻断首页新闻浏览
+    priority: P1
+    rules:
+      - target: "**/*.ets"
+        llm: 检查用户拒绝位置权限、系统定位未开启或定位失败时，首页是否仍可继续浏览新闻内容，并展示清晰的降级提示，而不是直接白屏、报错退出或卡死在加载态

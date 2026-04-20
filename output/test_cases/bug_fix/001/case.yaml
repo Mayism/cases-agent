@@ -27,13 +27,3 @@ constraints:
       name: ForEach
     llm: 检查ForEach是否使用稳定属性作为key
   description: 购物车列表渲染需要使用稳定key
-- id: HM-BUGFIX-001-03
-  name: 数量变化后购物车列表展示和价格必须保持一致
-  priority: P1
-  rules:
-  - target: '**/pages/*.ets'
-    ast:
-    - type: call
-      name: ForEach
-    llm: 检查数量调整后列表和价格是否同步刷新
-  description: 数量变化后购物车列表展示和价格必须保持一致

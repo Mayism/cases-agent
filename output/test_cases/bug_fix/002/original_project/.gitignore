@@ -1,8 +1,8 @@
-**/node_modules
-**/oh_modules
-**/.preview
+/node_modules
+/oh_modules
 /local.properties
 /.idea
+/.codecheck
 **/build
 /.hvigor
 .cxx
@@ -11,5 +11,5 @@
 /.clang-tidy
 **/.test
 /.appanalyzer
-**/oh-package-lock.json5
-**/BuildProfile.ets
+oh-package-lock.json5
+BuildProfile.ets

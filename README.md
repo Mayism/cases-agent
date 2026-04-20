@@ -83,11 +83,11 @@ cases-agent/
 
 常见字段转换如下：
 
-- `case.id`：输入中是逻辑 ID，例如 `requirement_scenic_atomic_mapkit_current_location`
-- 输出 `case.id`：会变成编号形式，例如 `requirement_007`
+- `case.id`：输入中是逻辑 ID，例如 `requirement_005_scenic_atomic_mapkit_current_location`
+- 输出 `case.id`：会变成编号形式，例如 `requirement_005`
 - `case.input`：会被转换为输出 `case.prompt`
 - `case.output_requirements`：如果未填写，脚本会按场景自动补默认文案
-- `constraints[].id`：如果输入没写，脚本会自动生成如 `HM-REQ-007-01`
+- `constraints[].id`：如果输入没写，脚本会自动生成如 `HM-REQ-005-01`
 - `constraints[].description`：如果输入没写，会默认使用 `name`
 
 因此，编写时应以 `data/cases/*.yaml` 为准；查看交付结果时再看 `output/test_cases/.../case.yaml`。
@@ -420,12 +420,12 @@ Agent运行的整个流程如下：
 
 正常情况下，Agent 会先生成类似下面这样的文件：
 
-- [data/cases/requirement/requirement_scenic_atomic_mapkit_current_location.yaml](</E:/repo/cases-agent/data/cases/requirement/requirement_scenic_atomic_mapkit_current_location.yaml:1>)
+- [data/cases/requirement/requirement_005_scenic_atomic_mapkit_current_location.yaml](</E:/repo/cases-agent/data/cases/requirement/requirement_005_scenic_atomic_mapkit_current_location.yaml:1>)
 
 然后再继续生成最终产物：
 
-- [output/test_cases/requirement/007/case.yaml](</E:/repo/cases-agent/output/test_cases/requirement/007/case.yaml:1>)
-- [output/test_cases/requirement/007/original_project](</E:/repo/cases-agent/output/test_cases/requirement/007/original_project:1>)
+- [output/test_cases/requirement/005/case.yaml](</E:/repo/cases-agent/output/test_cases/requirement/005/case.yaml:1>)
+- [output/test_cases/requirement/005/original_project](</E:/repo/cases-agent/output/test_cases/requirement/005/original_project:1>)
 
 如果你发现只生成了 `data/cases/*.yaml`，但还没有生成 `output/test_cases/`，说明流程只走完了第一步，还没有执行生成脚本。
 
@@ -447,7 +447,7 @@ python skills/harmonyos-case-generation/scripts/print_case_template.py full_gene
 
 ```bash
 python skills/harmonyos-case-generation/scripts/validate_case_specs.py data/cases
-python skills/harmonyos-case-generation/scripts/validate_case_specs.py data/cases/requirement/requirement_scenic_atomic_mapkit_current_location.yaml
+python skills/harmonyos-case-generation/scripts/validate_case_specs.py data/cases/requirement/requirement_005_scenic_atomic_mapkit_current_location.yaml
 ```
 
 ### 4. 生成用例
@@ -465,7 +465,7 @@ python skills/harmonyos-case-generation/scripts/validate_case_specs.py data/case
 最终你会得到一个这样的目录：
 
 ```text
-output/test_cases/requirement/007/
+output/test_cases/requirement/005/
 ├─ case.yaml
 └─ original_project/
 ```
@@ -503,7 +503,7 @@ python case_generation_agent.py --clean
 只生成单个 spec：
 
 ```bash
-python case_generation_agent.py --spec data/cases/requirement/requirement_scenic_atomic_mapkit_current_location.yaml
+python case_generation_agent.py --spec data/cases/requirement/requirement_005_scenic_atomic_mapkit_current_location.yaml
 ```
 
 含义：
@@ -525,11 +525,11 @@ python case_generation_agent.py --spec-dir data/cases/requirement
 
 以景区 MapKit 这个例子来说：
 
-- 输入 spec 是 [requirement_scenic_atomic_mapkit_current_location.yaml](</E:/repo/cases-agent/data/cases/requirement/requirement_scenic_atomic_mapkit_current_location.yaml:1>)
-- 执行 `python case_generation_agent.py --spec data/cases/requirement/requirement_scenic_atomic_mapkit_current_location.yaml`
-- 输出目录会生成到 [output/test_cases/requirement/007](</E:/repo/cases-agent/output/test_cases/requirement/007:1>)
-- 其中 [case.yaml](</E:/repo/cases-agent/output/test_cases/requirement/007/case.yaml:1>) 是标准化结果
-- [original_project](</E:/repo/cases-agent/output/test_cases/requirement/007/original_project:1>) 是复制出来的起始工程
+- 输入 spec 是 [requirement_005_scenic_atomic_mapkit_current_location.yaml](</E:/repo/cases-agent/data/cases/requirement/requirement_005_scenic_atomic_mapkit_current_location.yaml:1>)
+- 执行 `python case_generation_agent.py --spec data/cases/requirement/requirement_005_scenic_atomic_mapkit_current_location.yaml`
+- 输出目录会生成到 [output/test_cases/requirement/005](</E:/repo/cases-agent/output/test_cases/requirement/005:1>)
+- 其中 [case.yaml](</E:/repo/cases-agent/output/test_cases/requirement/005/case.yaml:1>) 是标准化结果
+- [original_project](</E:/repo/cases-agent/output/test_cases/requirement/005/original_project:1>) 是复制出来的起始工程
 
 一句话总结：
 
@@ -554,13 +554,13 @@ output/test_cases/<scenario>/<编号>/
 
 ```yaml
 case:
-  id: requirement_007
+  id: requirement_005
   scenario: requirement
   title: 实现景区元服务接入MapKit并默认展示当前位置需求
   prompt: ...
   output_requirements: ...
 constraints:
-  - id: HM-REQ-007-01
+  - id: HM-REQ-005-01
     name: 首页必须接入 MapKit 地图组件并将地图作为景区导览主视图
     priority: P0
     rules:
