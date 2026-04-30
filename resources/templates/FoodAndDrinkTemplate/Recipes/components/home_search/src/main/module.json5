@@ -1,9 +1,0 @@
-{
-  "module": {
-    "name": "home_search",
-    "type": "har",
-    "deviceTypes": [
-      "default"
-    ]
-  }
-}

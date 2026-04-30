@@ -253,10 +253,6 @@ def build_case_content(spec: dict, case_num: str) -> dict:
             "rules": rules,
         }
 
-        description = constraint.get("description") or constraint.get("name", "")
-        if description:
-            item["description"] = description
-
         formatted_constraints.append(item)
 
     if not formatted_constraints:

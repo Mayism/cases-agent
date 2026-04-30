@@ -1,9 +1,0 @@
-{
-  "module": {
-    "name": "upload_recipe",
-    "type": "har",
-    "deviceTypes": [
-      "default"
-    ]
-  }
-}

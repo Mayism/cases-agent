@@ -1,9 +1,0 @@
-{
-  "routerMap": [
-    {
-      "name": "StorePage",
-      "pageSourceFile": "src/main/ets/page/StorePage.ets",
-      "buildFunction": "buildStorePage"
-    }
-  ]
-}

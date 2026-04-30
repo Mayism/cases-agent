@@ -1,9 +1,0 @@
-{
-  "routerMap": [
-    {
-      "name": "MineMemberCenter",
-      "pageSourceFile": "src/main/ets/pages/MineMemberCenter.ets",
-      "buildFunction": "MineMemberCenterBuilder"
-    }
-  ]
-}

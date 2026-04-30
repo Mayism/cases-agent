@@ -1,9 +1,0 @@
-{
-  "routerMap": [
-    {
-      "name": "SubmitCommentPage",
-      "pageSourceFile": "src/main/ets/views/SubmitCommentView.ets",
-      "buildFunction": "SubmitCommentPageBuilder"
-    }
-  ]
-}

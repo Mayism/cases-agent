@@ -1,9 +1,0 @@
-{
-  "module": {
-    "name": "module_address_search",
-    "type": "har",
-    "deviceTypes": [
-      "default"
-    ]
-  }
-}

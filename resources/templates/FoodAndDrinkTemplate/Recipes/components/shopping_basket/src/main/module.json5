@@ -1,9 +1,0 @@
-{
-  "module": {
-    "name": "shopping_basket",
-    "type": "har",
-    "deviceTypes": [
-      "phone"
-    ]
-  }
-}

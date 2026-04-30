@@ -88,7 +88,6 @@ cases-agent/
 - `case.input`：会被转换为输出 `case.prompt`
 - `case.output_requirements`：如果未填写，脚本会按场景自动补默认文案
 - `constraints[].id`：如果输入没写，脚本会自动生成如 `HM-REQ-005-01`
-- `constraints[].description`：如果输入没写，会默认使用 `name`
 
 因此，编写时应以 `data/cases/*.yaml` 为准；查看交付结果时再看 `output/test_cases/.../case.yaml`。
 
@@ -157,7 +156,7 @@ constraints:
 `full_generation` 场景通常只需要：
 
 - 保留核心 `case` 字段
-- 用 `input` 明确业务角色、链路和技术约束
+- 用 `input` 明确业务角色和关键功能点
 
 ### 4. constraints 编写说明
 
@@ -461,7 +460,7 @@ python skills/harmonyos-case-generation/scripts/validate_case_specs.py data/case
 2. 根据 `template_project`、`starter_kind` 或默认空工程，确定 `original_project` 来源
 3. 把源工程复制到 `output/test_cases/<scenario>/<编号>/original_project/`
 4. 把输入 spec 转成标准化的 `case.yaml`
-5. 自动补齐编号后的 `case.id`、`constraints[].id`、`description` 等字段
+5. 自动补齐编号后的 `case.id`、`constraints[].id` 等字段
 
 最终你会得到一个这样的目录：
 
@@ -570,7 +569,6 @@ constraints:
           - type: call
             name: MapComponent
         llm: 检查首页是否真实接入 MapComponent
-    description: 首页必须接入 MapKit 地图组件并将地图作为景区导览主视图
 ```
 
 输出字段说明：
@@ -579,7 +577,6 @@ constraints:
 - `case.prompt`：由输入 `case.input` 或自定义 `case.prompt` 生成
 - `case.output_requirements`：场景级默认文案或输入自定义文案
 - `constraints[].id`：自动生成的标准约束编号
-- `constraints[].description`：默认继承 `name`
 
 如果你要新增或修改用例，建议优先维护：
 

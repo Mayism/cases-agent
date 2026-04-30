@@ -1,9 +1,0 @@
-{
-  "module": {
-    "name": "featured_recipes",
-    "type": "har",
-    "deviceTypes": [
-      "default",
-    ]
-  }
-}
