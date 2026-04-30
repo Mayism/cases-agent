@@ -505,7 +505,7 @@ def build_requirement_prompt(request_text: str, project_summary: dict) -> str:
     return "\n".join(lines).strip()
 
 
-def infer_ast_rules(request_text: str, project_summary: dict, scenario: str) -> list[dict]:
+def infer_llm_rules(request_text: str, project_summary: dict, scenario: str) -> list[dict]:
     text = f"{request_text}\n{' '.join(project_summary['kits'])}".lower()
     constraints: list[dict] = []
 
@@ -518,8 +518,7 @@ def infer_ast_rules(request_text: str, project_summary: dict, scenario: str) -> 
                 "rules": [
                     {
                         "target": "**/pages/*.ets",
-                        "ast": [{"type": "call", "name": "MapComponent"}],
-                        "llm": "检查页面是否真实使用地图组件作为主视图，而不是静态占位。",
+                        "llm": "检查地图能力是否真实接入业务主链路：页面应包含地图主视图、位置/门店等业务数据渲染、加载/空态/失败态和结果反馈，不能只用静态图片或固定文案占位。",
                     }
                 ],
             }
@@ -534,11 +533,7 @@ def infer_ast_rules(request_text: str, project_summary: dict, scenario: str) -> 
                 "rules": [
                     {
                         "target": "**/*.ets",
-                        "ast": [
-                            {"type": "call", "name": "requestPermissionsFromUser"},
-                            {"type": "call", "name": "getCurrentLocation"},
-                        ],
-                        "llm": "检查是否形成权限申请到位置结果消费的完整链路。",
+                        "llm": "检查定位能力是否形成完整技术链路：包含权限声明与运行时授权、拒权/失败降级、位置结果消费、业务状态更新和用户可继续操作路径。",
                     }
                 ],
             }
@@ -553,8 +548,7 @@ def infer_ast_rules(request_text: str, project_summary: dict, scenario: str) -> 
                 "rules": [
                     {
                         "target": "**/*.ets",
-                        "ast": [{"type": "import", "name": "PaymentKit"}],
-                        "llm": "检查是否真实接入支付 kit，并处理支付成功、失败或取消状态。",
+                        "llm": "检查支付能力是否具备真实接入和状态闭环：包含支付入口、参数组装、支付结果处理、成功/失败/取消反馈、异常兜底和对原有订单或业务状态的正确更新。",
                     }
                 ],
             }
@@ -569,11 +563,7 @@ def infer_ast_rules(request_text: str, project_summary: dict, scenario: str) -> 
                 "rules": [
                     {
                         "target": "**/*.ets",
-                        "ast": [
-                            {"type": "decorator", "name": "ObservedV2"},
-                            {"type": "call", "name": "ForEach"},
-                        ],
-                        "llm": "检查修复是否真正作用于列表渲染与状态跟踪链路。",
+                        "llm": "检查问题修复是否真正落到状态管理、数据源和列表渲染链路：需要说明状态如何被追踪、数据如何更新、列表如何稳定刷新，并避免只通过强制刷新 UI 掩盖问题。",
                     }
                 ],
             }
@@ -587,7 +577,7 @@ def infer_ast_rules(request_text: str, project_summary: dict, scenario: str) -> 
             "rules": [
                 {
                     "target": "**/*.ets",
-                    "llm": "检查是否避免将业务逻辑、状态管理、权限处理和展示代码全部堆叠在单一页面文件中。",
+                    "llm": "检查工程结构是否保持页面、组件、ViewModel/model/types 的职责拆分：页面负责编排，组件负责展示，状态和业务逻辑沉到合适模块，避免把权限、网络、状态和渲染全部堆叠在单一页面文件中。",
                 }
             ],
         }
@@ -601,7 +591,7 @@ def infer_ast_rules(request_text: str, project_summary: dict, scenario: str) -> 
             "rules": [
                 {
                     "target": "**/module.json5",
-                    "llm": "检查是否补齐当前场景需要的权限、模块能力声明或基础配置。",
+                    "llm": "检查配置文件是否补齐当前场景需要的权限、模块能力声明、路由/页面注册或基础配置，并确认配置与页面调用链路一致，不能只改 UI 不补配置。",
                 }
             ],
         }
@@ -667,20 +657,6 @@ def dump_case_yaml(case_meta: dict, constraints: list[dict]) -> str:
         lines.append("    rules:")
         for rule in constraint["rules"]:
             lines.append(f"      - target: {yaml_scalar(rule['target'])}")
-            ast_items = rule.get("ast") or []
-            if ast_items:
-                lines.append("        ast:")
-                for item in ast_items:
-                    lines.append(f"          - type: {yaml_scalar(item['type'])}")
-                    name = item.get("name")
-                    target = item.get("target")
-                    context = item.get("context")
-                    if name:
-                        lines.append(f"            name: {yaml_scalar(name)}")
-                    if target:
-                        lines.append(f"            target: {yaml_scalar(target)}")
-                    if context:
-                        lines.append(f"            context: {yaml_scalar(context)}")
             if rule.get("llm"):
                 lines.append(f"        llm: {yaml_scalar(rule['llm'])}")
     return "\n".join(lines) + "\n"
@@ -852,7 +828,7 @@ def main() -> None:
     summary = summarize_project(project_path)
     prompt = build_prompt(scenario, args.request, summary)
     title = build_title(scenario, args.request, summary)
-    constraints = infer_ast_rules(args.request, summary, scenario)
+    constraints = infer_llm_rules(args.request, summary, scenario)
 
     case_yaml = dump_case_yaml(
         {

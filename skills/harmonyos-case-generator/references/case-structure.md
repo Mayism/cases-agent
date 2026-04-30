@@ -59,10 +59,7 @@ constraints:
     priority: P0
     rules:
       - target: "**/*.ets"
-        ast:
-          - type: call
-            name: SomeAbility
-        llm: 语义补充说明
+        llm: 检查是否形成真实技术链路，包含状态管理、路由接入、异常兜底和不可破坏的原有主流程。
 ```
 
 ## Good Prompt Characteristics
@@ -82,16 +79,13 @@ constraints:
 - `P0`: 核心主链路、关键能力接入、不可缺失的结构
 - `P1`: 状态处理、异常兜底、配置补全、交互完整性
 
-优先写真实代码证据：
+当前阶段只写 `llm` 约束，暂不写 `ast` 规则，待后续放开后再补充 AST 检查。`llm` 约束应尽量包含技术约束点，例如：
 
-- `MapComponent`
-- `requestPermissionsFromUser`
-- `getCurrentLocation`
-- `PaymentKit`
-- `router.pushUrl`
-- `Navigation`
-- `@ObservedV2`
-- `@Trace`
+- 页面、组件、ViewModel/model/types 的职责拆分
+- 路由接入、参数传递、返回态恢复和原有主链路保护
+- Kit 权限声明、运行时授权、调用结果处理和失败降级
+- loading、空态、失败态、重试、重复触发和异步竞态处理
+- 资源、主题、mock 数据、网络/缓存封装和模块配置一致性
 
 避免只有空泛表达：
 
