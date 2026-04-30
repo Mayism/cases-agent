@@ -164,10 +164,19 @@ def parse_args() -> argparse.Namespace:
         "--project-path",
         help="HarmonyOS project path. Optional for full_generation when industry info can be inferred from request.",
     )
-    parser.add_argument("--request", required=True, help="User request in natural language")
+    parser.add_argument("--request", help="User request in natural language")
     parser.add_argument("--scenario", choices=sorted(SCENARIO_LABELS), help="Optional explicit scenario")
     parser.add_argument("--case-id", help="Optional explicit case id")
     parser.add_argument("--output-root", default="data/cases", help="Root directory for generated cases")
+    parser.add_argument(
+        "--zip-only-project-root",
+        help="Only create or refresh original_project.zip for an already prepared project root.",
+    )
+    parser.add_argument(
+        "--defer-zip",
+        action="store_true",
+        help="Copy original_project and generate case.yaml, but wait for manual/agent edits before zipping.",
+    )
     return parser.parse_args()
 
 
@@ -187,6 +196,26 @@ def detect_scenario_without_project(request_text: str) -> str:
     if any(token in text for token in ["新增", "扩展", "接入", "优化现有", "基于现有", "requirement"]):
         return "requirement"
     return "full_generation"
+
+
+def is_deletion_based_requirement(request_text: str) -> bool:
+    """Return true for incremental cases that must remove existing code before zipping."""
+    text = request_text.lower()
+    deletion_markers = [
+        "剥离",
+        "裁剪",
+        "从当前工程中删除",
+        "从当前工程删除",
+        "已有功能删除",
+        "删除后形成",
+        "删除或弱化",
+        "恢复/补齐",
+        "恢复该",
+        "补齐该",
+        "恢复能力",
+        "补齐能力",
+    ]
+    return any(marker in text for marker in deletion_markers)
 
 
 def slugify(value: str) -> str:
@@ -423,6 +452,59 @@ def build_prd(request_text: str, project_summary: dict) -> str:
     return "\n".join(lines).strip()
 
 
+def build_requirement_prompt(request_text: str, project_summary: dict) -> str:
+    pages = project_summary["pages"] or ["待识别真实页面入口"]
+    components = project_summary["components"] or ["待识别公共组件"]
+    kits = project_summary["kits"] or ["如需求涉及 HarmonyOS Kit，需补齐权限、配置、调用和失败兜底"]
+    readme_excerpt = project_summary["readme_excerpt"] or "未读取到 README.md，以现有代码结构为准。"
+    deletion_based = is_deletion_based_requirement(request_text)
+    action_word = "恢复/补齐" if deletion_based else "新增/扩展"
+
+    lines = [
+        "请基于当前 HarmonyOS 工程完成增量开发，不要从零重建工程。",
+        "",
+        "## 一、业务背景和目标",
+        request_text.strip(),
+        f"- 目标是在现有链路上{action_word}可交互能力，覆盖入口、操作、状态反馈和结果回显。",
+        "",
+        "## 二、现有工程基线",
+        f"- 工程名称：{project_summary['project_name']}",
+        f"- README 摘要：{readme_excerpt}",
+        f"- 可复用页面：{'; '.join(pages[:6])}",
+        f"- 可复用组件：{'; '.join(components[:6])}",
+        "- 开发前先理解现有页面、组件、ViewModel/model、路由、资源和模块配置，优先沿用当前工程组织方式。",
+        "",
+        "## 三、新增功能范围",
+    ]
+    if deletion_based:
+        lines.extend(
+            [
+                "- `original_project` 中已删除或裁剪相关已有能力，需要恢复/补齐页面入口、组件展示、状态流转、数据模型、路由参数、资源引用或 Kit 调用封装。",
+                "- 恢复后必须与保留的原有链路重新接通，不要另起孤岛页面。",
+            ]
+        )
+    else:
+        lines.extend(
+            [
+                "- 在当前工程基础上新增或扩展功能入口、核心页面/组件、状态处理、数据模型和结果反馈。",
+                "- 新能力应接入现有首页、列表、详情、表单、设置或业务入口，不要只做单页静态演示。",
+            ]
+        )
+    lines.extend(
+        [
+            "- 覆盖加载中、成功、失败、空数据、取消/返回、重复触发等关键状态；跨页面流程需处理参数传递和返回态恢复。",
+            "",
+            "## 四、技术接入要求",
+            "- 页面负责编排，组件负责展示，ViewModel/model/types 负责状态和业务逻辑，避免把逻辑塞进 `build()`。",
+            "- 复用已有公共组件、主题资源、mock 数据、网络/缓存封装，并沿用当前 `Navigation`、`NavPathStack`、路由表或跳转模式。",
+            f"- Kit/平台能力关注：{', '.join(kits[:5])}。",
+            "- 涉及定位、地图、相机、扫码、账号、支付、通知、分享等 Kit 时，补齐 `module.json5` 权限/能力声明、运行时授权、结果处理、失败降级和用户可继续操作路径。",
+            "- 保持工程可编译，改动应落在页面、组件、ViewModel/model/types、路由配置、资源或 mock 等合理文件中，不能破坏现有主流程。",
+        ]
+    )
+    return "\n".join(lines).strip()
+
+
 def infer_ast_rules(request_text: str, project_summary: dict, scenario: str) -> list[dict]:
     text = f"{request_text}\n{' '.join(project_summary['kits'])}".lower()
     constraints: list[dict] = []
@@ -531,6 +613,8 @@ def infer_ast_rules(request_text: str, project_summary: dict, scenario: str) -> 
 def build_prompt(scenario: str, request_text: str, project_summary: dict) -> str:
     if scenario == "full_generation":
         return build_prd(request_text, project_summary)
+    if scenario == "requirement":
+        return build_requirement_prompt(request_text, project_summary)
     return request_text.strip()
 
 
@@ -711,6 +795,17 @@ def create_gitignore_filtered_zip(project_root: Path) -> Path:
 
 def main() -> None:
     args = parse_args()
+    if args.zip_only_project_root:
+        zip_project_root = Path(args.zip_only_project_root).resolve()
+        if not zip_project_root.is_dir():
+            raise FileNotFoundError(f"Project root not found: {zip_project_root}")
+        archive_path = create_gitignore_filtered_zip(zip_project_root)
+        print(f"original_project_zip={archive_path}")
+        return
+
+    if not args.request:
+        raise ValueError("--request is required unless --zip-only-project-root is used.")
+
     project_path = Path(args.project_path).resolve() if args.project_path else None
     if project_path and not project_path.exists():
         raise FileNotFoundError(f"Project path not found: {project_path}")
@@ -776,8 +871,11 @@ def main() -> None:
         prd_dir.mkdir(parents=True, exist_ok=True)
         (prd_dir / "产品需求文档.md").write_text(prompt, encoding="utf-8")
 
+    archive_path: Path | None = None
+    defer_zip = args.defer_zip or (scenario == "requirement" and is_deletion_based_requirement(args.request))
     if scenario in {"requirement", "bug_fix"}:
         copy_original_project(project_path, case_dir / "original_project")
+    if scenario == "requirement" and not defer_zip:
         archive_path = create_gitignore_filtered_zip(case_dir / "original_project")
 
     print(f"scenario={scenario}")
@@ -787,7 +885,12 @@ def main() -> None:
         print(f"prd={case_dir / 'prd' / '产品需求文档.md'}")
     if scenario in {"requirement", "bug_fix"}:
         print(f"original_project={case_dir / 'original_project'}")
-        print(f"original_project_zip={archive_path}")
+        if archive_path:
+            print(f"original_project_zip={archive_path}")
+        elif scenario == "requirement":
+            print("next_step=请先在 original_project 中删除或裁剪已选功能代码，再使用 --zip-only-project-root 刷新 original_project.zip")
+        else:
+            print("next_step=请先在 original_project 中构造缺陷，再使用 --zip-only-project-root 刷新 original_project.zip")
 
 
 if __name__ == "__main__":
