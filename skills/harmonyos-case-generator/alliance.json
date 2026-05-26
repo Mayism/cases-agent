@@ -1,0 +1,1151 @@
+{
+  "$schema": "https://raw.githubusercontent.com/HarmonyOS-AI/json-schema/main/harmonyrun/test_suite.schema.json",
+  "suite": {
+    "id": "smoke_harmony_003",
+    "name": "Harmony 冒烟套件",
+    "app_package": "com.huawei.hmsapp.alliance",
+    "app_card": "file:./alliance.md"
+  },
+  "defaults": {
+    "config_overrides": {
+      "steps": 30
+    }
+  },
+  "test_cases": [
+    {
+      "id": "TC_app_alliance_001",
+      "title": "探索页最上方的banner图，点击进去后，活动报名页面能正常展示",
+      "level": "L0",
+      "preconditions": "已进入到探索页",
+      "test_steps": [
+        {
+          "action": "1.点击上方的banner页进入活动报名页面"
+        }
+      ],
+      "expected_result": "1.活动报名页面能正常展示，不会出现白屏或者黑屏现象",
+      "postconditions": ""
+    },
+    {
+      "id": "TC_app_alliance_002",
+      "title": "近期活动详情页展示精选活动",
+      "level": "L0",
+      "preconditions": "已进入到探索页",
+      "test_steps": [
+        {
+          "action": "1.点击近期活动右边的大于号图标，进入近期活动页面"
+        }
+      ],
+      "expected_result": "1.可以查看页面上有精选活动，也可以点击报名",
+      "postconditions": ""
+    },
+    {
+      "id": "TC_app_alliance_003",
+      "title": "近期活动列表页展示三个活动列表",
+      "level": "L1",
+      "preconditions": "已进入到探索页",
+      "test_steps": [
+        {
+          "action": "1.查看近期活动四个字下方是否有三个活动图标",
+          "checkpoint": "1.展示三个活动图标"
+        },
+        {
+          "action": "2.点击第一个活动图标进行活动详情页",
+          "checkpoint": "2.活动详情页展示正常，页面包含报名两个字"
+        },
+        {
+          "action": "3.点击右上角的四个点的图标，弹出分享弹框后，点击复制链接",
+          "checkpoint": "3.点击复制链接后，toast提示复制成功"
+        }
+      ],
+      "expected_result": " ",
+      "postconditions": ""
+    },
+    {
+      "id": "TC_app_alliance_004",
+      "title": "精彩直播详情页展示直播日历，进入精彩回顾后可以播放视频",
+      "level": "L0",
+      "preconditions": "已进入到探索页",
+      "test_steps": [
+        {
+          "action": "1.上滑屏幕的一半距离，找到精彩直播，点击精彩直播右边的大于号图标，进入直播详情页",
+          "checkpoint": "1.可以查看看到直播日历四个字"
+        },
+        {
+          "action": "2.点击详情页中的精彩回顾按钮，可以进入到视频播放页面，点击播放窗口中的画面后，出现视频导航栏，点击播放按钮",
+          "checkpoint": "2.视频播放页面展示正常，可以正常播放"
+        },
+        {
+          "action": "3.播放1分钟后，点击暂停按钮",
+          "checkpoint": "3.点击暂停按钮后暂停播放"
+        }
+      ],
+      "expected_result": " ",
+      "postconditions": ""
+    },
+    {
+      "id": "TC_app_alliance_005",
+      "title": "精彩直播下方可以左右滑动展示直播内容，点击任意一张直播卡片进入后，页面展示课程介绍",
+      "level": "L1",
+      "preconditions": "已进入到探索页",
+      "test_steps": [
+        {
+          "action": "1.上滑屏幕的一半距离，找到精彩直播，精彩直播下方的直播卡片左右滑动",
+          "checkpoint": "1.可以左右滑动查看直播卡片的内容"
+        },
+        {
+          "action": "2.点击任意一张卡片进入直播详情页，可以上滑查看课程内容",
+          "checkpoint": "2.直播详情页展示课程介绍"
+        },
+        {
+          "action": "3.点击右上角的四个点的图标（如果没有图标，需要下滑到顶部直到图标显示），弹出分享弹框后，点击举报按钮",
+          "checkpoint": "3.弹出举报弹框，弹框中包含举报类型、举报描述、证明材料"
+        }
+      ],
+      "expected_result": " ",
+      "postconditions": ""
+    },
+    {
+      "id": "TC_app_alliance_006",
+      "title": "探索页下滑找到“最新动态”四个字，点击和最新动态同一行最右边的大于图标，可以查看所有的最新动态",
+      "level": "L0",
+      "preconditions": "已进入到探索页",
+      "test_steps": [
+        {
+          "action": "1.上滑屏幕一直到底，找到最新动态字眼，点击和最新动态同一行最右边的大于图标",
+          "checkpoint": "1.可以查看到所有的最新动态"
+        },
+        {
+          "action": "2.进入后点击第一个动态查看详情",
+          "checkpoint": "2.第一个动态点击后页面展示正常，不会出现白屏或者黑屏现象"
+        },
+        {
+          "action": "3.点击右上角的四个点的图标，弹出分享弹框后，点击最后一个有感叹号的举报图标",
+          "checkpoint": "3.弹出举报弹框，弹框中包含举报类型、举报描述、证明材料"
+        }
+      ],
+      "expected_result": " ",
+      "postconditions": ""
+    },
+    {
+      "id": "TC_app_alliance_007",
+      "title": "探索页下滑找到“开发者故事”四个字，点击和开发者故事同一行最右边的大于图标，可以查看所有的开发者故事",
+      "level": "L1",
+      "preconditions": "已进入到探索页",
+      "test_steps": [
+        {
+          "action": "1.探索页下滑找到“开发者故事”四个字，点击和开发者故事同一行最右边的大于图标",
+          "checkpoint": "1.可以查看所有的开发者故事"
+        },
+        {
+          "action": "2.进入后点击列表页的第一个开发者故事",
+          "checkpoint": "2.页面展示正常，有故事名，时间和正文"
+        },
+        {
+          "action": "3.点击右上角的四个点的图标，弹出分享弹框后，点击举报按钮",
+          "checkpoint": "3.弹出举报弹框，弹框中包含举报类型、举报描述、证明材料"
+        },
+        {
+          "action": "4.从屏幕最右侧的边上往左快速滑动，可以返回到上一页",
+          "checkpoint": "4.举报弹框消失，停留在开发者故事页面"
+        }
+      ],
+      "expected_result": " ",
+      "postconditions": ""
+    },
+    {
+      "id": "TC_app_alliance_008",
+      "title": "探索页上方导航栏的搜索按钮可以搜索想要查看的内容",
+      "level": "L0",
+      "preconditions": "已进入到探索页",
+      "test_steps": [
+        {
+          "action": "1.点击探索页上方导航栏的搜索按钮，在输入框中输入鸿蒙应用",
+          "checkpoint": "1.展示鸿蒙应用相关的内容"
+        },
+        {
+          "action": "2.点击搜索到的内容中的任意一个",
+          "checkpoint": "2.可以进入到对应的页面"
+        }
+      ],
+      "expected_result": " ",
+      "postconditions": ""
+    },
+    {
+      "id": "TC_app_alliance_009",
+      "title": "探索页上方导航栏的搜索按钮输入内容后支持清空，增加",
+      "level": "L1",
+      "preconditions": "已进入到探索页",
+      "test_steps": [
+        {
+          "action": "1.点击探索页上方导航栏的搜索按钮，在输入框中输入鸿蒙应用",
+          "checkpoint": "1.展示鸿蒙应用相关的内容"
+        },
+        {
+          "action": "2.清空输入的内容后，重新搜索开发者，点击搜索后进入相应的开发者页面，在搜索框开发者后面添加实名认证四个字，点击搜索",
+          "checkpoint": "2.页面展示实名认证相关内容"
+        }
+      ],
+      "expected_result": " ",
+      "postconditions": ""
+    },
+    {
+      "id": "TC_app_alliance_010",
+      "title": "点击探索页上方导航栏的信封图标可以查看消息",
+      "level": "L1",
+      "preconditions": "已进入到探索页",
+      "test_steps": [
+        {
+          "action": "1.点击探索页上方导航栏的信封图标，弹出半模态弹框",
+          "checkpoint": "1.可以进入到消息页面，页面包含评论与回复、邀请回答、我的消息、系统消息等内容"
+        },
+        {
+          "action": "2.点击弹框右上角的x",
+          "checkpoint": "2.返回到探索页"
+        },
+        {
+          "action": "3.点击探索页上方导航栏的信封图标，弹出半模态弹框，从屏幕最右侧边上往左快速滑动返回上一层",
+          "checkpoint": "3.消息弹框消失，返回到探索页"
+        }
+      ],
+      "expected_result": " ",
+      "postconditions": ""
+    },
+    {
+      "id": "TC_app_alliance_011",
+      "title": "点击学习页面上方的banner图，可以进行课程播放",
+      "level": "L0",
+      "preconditions": "打开开发者联盟后，点击学习，进入学习页面",
+      "test_steps": [
+        {
+          "action": "点击学习页面上方的banner图，点击图片上有HarmonyOS第一课几个字的图,向上滑动找到基础课程，点击下方的第一个课程，进入课程播放界面"
+        }
+      ],
+      "expected_result": "课程播放成功",
+      "postconditions": ""
+    },
+    {
+      "id": "TC_app_alliance_012",
+      "title": "点击学习页面的课程图标，可以在综合排序、最热、最新之间切换不同的课程，课程查询成功",
+      "level": "L0",
+      "preconditions": "打开开发者联盟后，点击学习，进入学习页面",
+      "test_steps": [
+        {
+          "action": "点击banner图下方的课程图标，进入后默认在综合排序列，点击最热，切换到最热页面，点击最新，切换到最新页面"
+        }
+      ],
+      "expected_result": "页面切换正确，可以看到切换后课程总数是变化的",
+      "postconditions": ""
+    },
+    {
+      "id": "TC_app_alliance_013",
+      "title": "点击学习页面的课程图标后，可以筛选业务领域和课程类型",
+      "level": "L1",
+      "preconditions": "打开开发者联盟后，点击学习，进入学习页面",
+      "test_steps": [
+        {
+          "action": "点击banner图下方的课程图标，点击最热旁边的筛选图标(漏斗图标)，选择不同的业务领域，查看屏幕下方最右边的按钮内容数量是否有变化"
+        }
+      ],
+      "expected_result": "选择不同的领域，最下方的查看内容按钮上的数字在变化",
+      "postconditions": ""
+    },
+    {
+      "id": "TC_app_alliance_014",
+      "title": "点击学习页面的课程图标后，可以搜索想要学习的课程",
+      "level": "L0",
+      "preconditions": "打开开发者联盟后，点击学习，进入学习页面",
+      "test_steps": [
+        {
+          "action": "1.点击学习页面的课程图标后，点击列表页的第一个课程",
+          "checkpoint": "1.课程页面中包含很多文字"
+        },
+        {
+          "action": "2.如果课程正好是视频，可能需要点击一下视频播放窗口后才能看到右上角的分享按钮然后点击分享按钮，如果是文本课程，直接点击右上角的分享按钮",
+          "checkpoint": "2.弹出分享弹框"
+        },
+        {
+          "action": "3.点击弹框中的生成图片的图标",
+          "checkpoint": "3.弹出微信、朋友圈、保存图片、系统分享四个选项"
+        },
+        {
+          "action": "4.点击保存图片的选项",
+          "checkpoint": "4.弹出安全保存图片和视频的弹框选项，包含取消和允许的按钮"
+        }
+      ],
+      "expected_result": " ",
+      "postconditions": ""
+    },
+    {
+      "id": "TC_app_alliance_015",
+      "title": "点击学习页面的课程图标后，可以对页面进行收藏、查看目录、评论",
+      "level": "L0",
+      "preconditions": "打开开发者联盟后，点击学习，进入学习页面",
+      "test_steps": [
+        {
+          "action": "1.点击学习页面的课程图标后，在搜索框输入HarmonyOS介绍，点击键盘上的搜素按钮，点击搜索出来的列表页的第一个课程",
+          "checkpoint": "1.点击列表页课程后，进入课程页面，下滑到底部，可以看到左边显示上一节，右边显示下一节"
+        },
+        {
+          "action": "2.点击下方悬浮栏的五角星图标,点亮图标",
+          "checkpoint": "2.五角星图标被点亮，且有toast提示：收藏成功，在【我的收藏】查看"
+        },
+        {
+          "action": "3.点击下方悬浮栏的五角星图标，取消点亮",
+          "checkpoint": "3.五角星图标未点亮，且有toast提示：取消收藏"
+        },
+        {
+          "action": "4.点击下方悬浮栏的三条横线的图标，查看目录结构，从屏幕最右侧的边上往左快速滑动，返回上一个页面",
+          "checkpoint": "4.弹出半模态弹框，弹框中有目录两个字，滑动后，弹框消失"
+        },
+        {
+          "action": "5.点击下方悬浮栏的评论的图标，弹出评论的弹框后，点击写评论，在请您对该课程进行打分下方从左到右开始数到第五个五角星进行点击，在请输入评论的区域输入：讲的不错，输入完成收起键盘",
+          "checkpoint": "5.五颗五角星被点亮，提交按钮被点亮，键盘收起"
+        },
+        {
+          "action": "6.点击x评论弹框消失",
+          "checkpoint": "6.评论弹框消失，返回到课程详情页"
+        }
+      ],
+      "expected_result": " ",
+      "postconditions": ""
+    },
+    {
+      "id": "TC_app_alliance_016",
+      "title": "点击学习页面的直播图标后，可以查看直播日历",
+      "level": "L1",
+      "preconditions": "打开开发者联盟后，点击学习，进入学习页面",
+      "test_steps": [
+        {
+          "action": "1.点击学习页面的直播图标，进入直播详情页",
+          "checkpoint": "1.页面包含直播日历"
+        },
+        {
+          "action": "2.向上滑动找到全部直播四个字，点击与这四个字同一行的最右侧的漏斗图标，业务模块下方选择HMS生态，业务模块下方选择HMS生态，业务模块下方选择HMS生态，在弹框的空白处上下滑动，找到业务分类下的快应用并选择，然后点击底部的确定按钮",
+          "checkpoint": "2.筛选成功，可以看到全部直播下方的图标包含快应用三个字"
+        }
+      ],
+      "expected_result": " ",
+      "postconditions": ""
+    },
+    {
+      "id": "TC_app_alliance_017",
+      "title": "点击学习页面的codelabs后，下载codelabs成功",
+      "level": "L1",
+      "preconditions": "打开开发者联盟后，点击学习，进入学习页面",
+      "test_steps": [
+        {
+          "action": "1.点击学习页面的codelabs，进入codelabs页面后，点击列表页第一个codelabs，找到页面源码下载的按钮并点击(如果页面没有源码下载按钮则用例执行结束，返回成功)",
+          "checkpoint": "1.会有提示，您即将离开当前环境并跳转至浏览器，请注意您的账号和财产安全"
+        },
+        {
+          "action": "2.点击继续前往后，跳转至浏览器下载codelabs，如果跳转到浏览器时有浏览器的弹框，则需要点击右下角的同意按钮，同意后会弹出下载的弹框（没有弹框的话跳转到浏览器直接弹的是下载的弹框），点击立即下载后，开始下载。",
+          "checkpoint": "2.下载完成后，显示下载完成"
+        },
+        {
+          "action": "3.如果点击下载后弹出允许“浏览器”向你发送通知？的弹框，需要点击下允许，如果没有弹框，该测试步骤默认通过",
+          "checkpoint": "3.点击允许后，弹框消失"
+        }
+      ],
+      "expected_result": " ",
+      "postconditions": ""
+    },
+    {
+      "id": "TC_app_alliance_018",
+      "title": "我的，点击华为账号的头像按钮，跳转到华为账号页面",
+      "level": "L1",
+      "preconditions": "点击联盟app应用，进入我的页面",
+      "test_steps": [
+        {
+          "action": "1、我的，点击华为账号的头像按钮，跳转到华为账号页面；",
+          "checkpoint": "1、页面显示文字：个人信息和按钮“×”"
+        },
+        {
+          "action": "2、点击按钮“×”，返回我的页面",
+          "checkpoint": "2、返回我的页面成功"
+        },
+        {
+          "action": "3、点击华为账号的头像按钮，从屏幕最右侧的边上往左快速滑动，返回我的页面",
+          "checkpoint": "3、返回我的页面成功"
+        }
+      ],
+      "expected_result": " ",
+      "postconditions": ""
+    },
+    {
+      "id": "TC_app_alliance_019",
+      "title": "我的，点击华为账号的头像按钮，跳转到华为账号修改个人信息，添加地址失败；",
+      "level": "L1",
+      "preconditions": "点击联盟app应用，进入我的页面",
+      "test_steps": [
+        {
+          "action": "1、我的，点击华为账号的头像按钮，点击个人信息，点击我的地址，点击新增地址，在粘贴框中输入“小艺 123521”，点击识别，有toast提示"
+        }
+      ],
+      "expected_result": "1、toast提示：地址可能有误，建议使用地图功能",
+      "postconditions": ""
+    },
+    {
+      "id": "TC_app_alliance_020",
+      "title": "我的，点击华为账号的头像按钮，跳转到华为账号修改个人信息，添加地址成功；",
+      "level": "L0",
+      "preconditions": "点击联盟app应用，进入我的页面",
+      "test_steps": [
+        {
+          "action": "1、我的，点击华为账号的头像按钮，点击个人信息；",
+          "checkpoint": "1、页面包含文本 “头像”，“昵称”，“性别”，“出生日期”，“账号名”，“手机号”，“邮件地址”，“实名认证”，“我的地址”，“历史表单输入”；"
+        },
+        {
+          "action": "2、点击我的地址，点击新增地址，在粘贴框中输入“小艺 13301266712 江苏 南京市 雨花台区 铁心桥街道 研究所”，点击识别",
+          "checkpoint": "2、toast提示：识别成功"
+        },
+        {
+          "action": "3、点击保存",
+          "checkpoint": "3、可以看到我的地址页面新增了一条地址信息，内容包含小艺"
+        },
+        {
+          "action": "4、点击包含小艺的这条地址右侧的删除按钮",
+          "checkpoint": "4、会有弹框，点击弹框中的删除，会有toast提示：删除地址成功"
+        }
+      ],
+      "expected_result": " ",
+      "postconditions": ""
+    },
+    {
+      "id": "TC_app_alliance_021",
+      "title": "我的，点击华为账号的头像按钮，点击个人信息，进入到个人信息页面",
+      "level": "L1",
+      "preconditions": "点击联盟app应用，进入我的页面",
+      "test_steps": [
+        {
+          "action": "1、我的，点击华为账号的头像按钮，点击个人信息，弹出个人信息的弹框后，点击按钮“×”，返回我的页面",
+          "checkpoint": "1、返回我的页面成功"
+        },
+        {
+          "action": "2、我的，点击华为账号的头像按钮，点击个人信息，弹出个人信息的弹框后，从屏幕最右侧的边上往左快速滑动，返回到华为账号页面",
+          "checkpoint": "2、返回华为账号页面，页面中包含个人信息"
+        },
+        {
+          "action": "3、点击个人信息，弹出个人信息的弹框后，点击弹框左边的“<”,返回到华为账号页面",
+          "checkpoint": "3、返回华为账号页面，页面中包含个人信息"
+        }
+      ],
+      "expected_result": " ",
+      "postconditions": ""
+    },
+    {
+      "id": "TC_app_alliance_022",
+      "title": "我的，点击华为账号下皇冠图标按钮，跳转到账号等级页面；",
+      "level": "L0",
+      "preconditions": "点击联盟app应用，进入我的页面",
+      "test_steps": [
+        {
+          "action": "1、我的，点击华为账号下皇冠图标按钮，跳转到账号等级页面；",
+          "checkpoint": "1、页面显示文字：“我的任务”，“我的积分”，“规则说明”；"
+        },
+        {
+          "action": "2、点击右上角按钮",
+          "checkpoint": "2、下方弹出“分享”弹框；"
+        },
+        {
+          "action": "3、点击分享弹框上的按钮“×”",
+          "checkpoint": "3、分享弹框被关闭"
+        },
+        {
+          "action": "4、再点击页面左上角的x",
+          "checkpoint": "4、返回我的页面成功；"
+        },
+        {
+          "action": "5、点击华为账号下皇冠图标按钮，跳转到账号等级页面，从屏幕最右侧的边上往左快速滑动，返回我的页面",
+          "checkpoint": "5、返回我的页面成功；"
+        }
+      ],
+      "expected_result": " ",
+      "postconditions": ""
+    },
+    {
+      "id": "TC_app_alliance_023",
+      "title": "我的，点击华为账号右边个人主页按钮，跳转个人信息页面；",
+      "level": "L0",
+      "preconditions": "点击联盟app应用，进入我的页面",
+      "test_steps": [
+        {
+          "action": "1、我的，点击华为账号右边个人主页按钮，跳转个人信息页面；",
+          "checkpoint": "1、页面显示文字：成就，问答，话题，文章；"
+        },
+        {
+          "action": "2、点击按钮“<”，返回我的页面",
+          "checkpoint": "2、返回我的页面成功；"
+        },
+        {
+          "action": "3、点击华为账号的头像按钮，从屏幕最右侧的边上往左快速滑动，返回我的页面",
+          "checkpoint": "3、返回我的页面成功"
+        }
+      ],
+      "expected_result": " ",
+      "postconditions": ""
+    },
+    {
+      "id": "TC_app_alliance_024",
+      "title": "我的，点击右上方的二维码扫码按钮，跳转成功",
+      "level": "L1",
+      "preconditions": "点击联盟app应用，进入我的页面",
+      "test_steps": [
+        {
+          "action": "1、我的，点击右上方的二维码扫码",
+          "checkpoint": "1、跳转成功，页面显示文字：扫描二维码/条形码；"
+        },
+        {
+          "action": "2、点击按钮“×”，返回我的页面",
+          "checkpoint": "2、返回我的页面成功；"
+        },
+        {
+          "action": "3、点击华为账号的头像按钮，从屏幕最右侧的边上往左快速滑动，返回我的页面",
+          "checkpoint": "3、返回我的页面成功"
+        }
+      ],
+      "expected_result": " ",
+      "postconditions": ""
+    },
+    {
+      "id": "TC_app_alliance_025",
+      "title": "我的，点击右上方的消息按钮，跳转成功",
+      "level": "L1",
+      "preconditions": "点击联盟app应用，进入我的页面",
+      "test_steps": [
+        {
+          "action": "1、我的，点击右上方的消息按钮",
+          "checkpoint": "1、跳转成功，页面显示文字：消息"
+        },
+        {
+          "action": "2、点击按钮“×”，返回我的页面",
+          "checkpoint": "2、返回我的页面成功；"
+        },
+        {
+          "action": "3、点击华为账号的头像按钮，从屏幕最右侧的边上往左快速滑动，返回我的页面",
+          "checkpoint": "3、返回我的页面成功；"
+        },
+        {
+          "action": "4、点击华为账号的头像按钮，弹出消息弹框，从消息弹框的顶部下滑页面，直至弹框消息，返回我的页面",
+          "checkpoint": "4、返回我的页面成功"
+        }
+      ],
+      "expected_result": " ",
+      "postconditions": ""
+    },
+    {
+      "id": "TC_app_alliance_026",
+      "title": "我的，点击我的收藏，跳转到我的收藏页面成功",
+      "level": "L1",
+      "preconditions": "点击联盟app应用，进入我的页面",
+      "test_steps": [
+        {
+          "action": "1、我的，点击我的收藏，跳转到我的收藏页面；",
+          "checkpoint": "1、跳转到我的收藏页面成功，页面显示：我的收藏"
+        },
+        {
+          "action": "2、点击“文档”，“社区”，“学习”；",
+          "checkpoint": "2、切换成功，页面显示文字；"
+        },
+        {
+          "action": "3、点击按钮“<”，返回我的页面；",
+          "checkpoint": "3、返回我的页面成功；"
+        },
+        {
+          "action": "4、点击我的收藏，跳转到我的收藏页面，从屏幕最右侧的边上往左快速滑动，返回我的页面",
+          "checkpoint": "4、返回我的页面成功"
+        }
+      ],
+      "expected_result": " ",
+      "postconditions": ""
+    },
+    {
+      "id": "TC_app_alliance_027",
+      "title": "我的，点击学习记录，跳转到学习记录页面成功",
+      "level": "L0",
+      "preconditions": "点击联盟app应用，进入我的页面",
+      "test_steps": [
+        {
+          "action": "1、我的，点击学习记录，跳转到学习记录页面；",
+          "checkpoint": "1、跳转到学习记录页面成功，页面显示：学习记录；"
+        },
+        {
+          "action": "2、点击“课程”，“考试”，“codelabs”；",
+          "checkpoint": "2、切换成功，页面显示文字；"
+        },
+        {
+          "action": "3、点击按钮“<”，返回我的页面；",
+          "checkpoint": "3、返回我的页面成功；"
+        },
+        {
+          "action": "4、点击学习记录，跳转到学习记录页面，从屏幕最右侧的边上往左快速滑动，返回我的页面",
+          "checkpoint": "4、返回我的页面成功"
+        }
+      ],
+      "expected_result": " ",
+      "postconditions": ""
+    },
+    {
+      "id": "TC_app_alliance_028",
+      "title": "我的，点击证书，跳转到证书页面成功",
+      "level": "L1",
+      "preconditions": "点击联盟app应用，进入我的页面",
+      "test_steps": [
+        {
+          "action": "1、我的，点击证书，跳转到证书页面成功；",
+          "checkpoint": "1、跳转到学习证书页面成功，页面显示：证书；"
+        },
+        {
+          "action": "2、点击“全部”，“考试”，“课程”，“开发者认证”；",
+          "checkpoint": "2、切换成功，页面显示内容；"
+        },
+        {
+          "action": "3、点击按钮“<”，返回我的页面；",
+          "checkpoint": "3、返回我的页面成功；"
+        },
+        {
+          "action": "4、点击证书，跳转到证书页面成功，从屏幕最右侧的边上往左快速滑动，返回我的页面",
+          "checkpoint": "4、返回我的页面成功"
+        }
+      ],
+      "expected_result": " ",
+      "postconditions": ""
+    },
+    {
+      "id": "TC_app_alliance_029",
+      "title": "我的，点击每日签到，跳转到签到页面成功",
+      "level": "L1",
+      "preconditions": "点击联盟app应用，进入我的页面",
+      "test_steps": [
+        {
+          "action": "1、我的，点击每日签到，跳转到我的签名页面",
+          "checkpoint": "1、跳转成功，页面显示文字；"
+        },
+        {
+          "action": "2、点击按钮“×”，返回我的页面",
+          "checkpoint": "2、返回我的页面成功；"
+        },
+        {
+          "action": "3、点击每日签到，跳转到我的签名页面，从屏幕最右侧的边上往左快速滑动，返回我的页面",
+          "checkpoint": "3、返回我的页面成功"
+        }
+      ],
+      "expected_result": " ",
+      "postconditions": ""
+    },
+    {
+      "id": "TC_app_alliance_030",
+      "title": "我的，点击我的账户，跳转到我的账户页面成功",
+      "level": "L0",
+      "preconditions": "点击联盟app应用，进入我的页面",
+      "test_steps": [
+        {
+          "action": "1、我的，点击我的账户，跳转到我的账户页面（注意区分华为账号和我的账户，这是两个不同的页面，不要混淆），如果没有我的账户，则该条用例执行结束，结果返回pass",
+          "checkpoint": "1、跳转成功，页面显示文字；"
+        },
+        {
+          "action": "2、点击按钮“×”，返回我的页面",
+          "checkpoint": "2、返回我的页面成功；"
+        },
+        {
+          "action": "3、点击我的账户，跳转到我的账号页面，从屏幕最右侧的边上往左快速滑动，返回我的页面",
+          "checkpoint": "3、返回我的页面成功"
+        }
+      ],
+      "expected_result": " ",
+      "postconditions": ""
+    },
+    {
+      "id": "TC_app_alliance_031",
+      "title": "我的，点击我的活动，跳转到我的活动页面成功",
+      "level": "L0",
+      "preconditions": "点击联盟app应用，进入我的页面",
+      "test_steps": [
+        {
+          "action": "1、我的，点击我的活动，跳转到我的活动页面；",
+          "checkpoint": "1、跳转成功，有活动则页面显示活动页面；没有活动页面显示没有符合条件的内容"
+        },
+        {
+          "action": "2、如果页面有活动，选择第一个活动跳转；如果没有，结束后面的执行步骤并返回成功",
+          "checkpoint": "2、有活动则跳转成功，页面显示文字；没有活动"
+        },
+        {
+          "action": "3、点击按钮“×”，点击按钮“<”，返回我的页面；",
+          "checkpoint": "3、返回我的页面成功；"
+        },
+        {
+          "action": "4、点击我的活动，跳转到我的活动页面，从屏幕最右侧的边上往左快速滑动，返回我的页面",
+          "checkpoint": "4、返回我的页面成功"
+        }
+      ],
+      "expected_result": " ",
+      "postconditions": ""
+    },
+    {
+      "id": "TC_app_alliance_032",
+      "title": "我的，点击我的工单，跳转到我的工单页面成功",
+      "level": "L0",
+      "preconditions": "点击联盟app应用，进入我的页面",
+      "test_steps": [
+        {
+          "action": "1、我的，点击我的工单，跳转到我的工单页面；",
+          "checkpoint": "1、跳转成功，页面显示文字"
+        },
+        {
+          "action": "2、点击右上方“+”，标题输入“【测试】验证AI自动化测试”，正文输入“这个是测试的工单”；",
+          "checkpoint":"2、右上角的按钮由灰色变成高亮"
+        },
+        {
+          "action": "3、点击按钮“<”，返回我的工单页面；",
+          "checkpoint":"3、返回我的工单页面"
+        }
+      ],
+      "expected_result": " ",
+      "postconditions": ""
+    },
+    {
+      "id": "TC_app_alliance_033",
+      "title": "我的，点击开发者实名认证，跳转成功",
+      "level": "L1",
+      "preconditions": "点击联盟app应用，进入我的页面",
+      "test_steps": [
+        {
+          "action": "1、我的，点击开发者实名认证，跳转开发者实名认证页面",
+          "checkpoint": "1、跳转成功，页面显示文字"
+        },
+        {
+          "action": "2、点击按钮“<”，返回我的页面；",
+          "checkpoint": "2、右上角的按钮由灰色变成高亮"
+        },
+        {
+          "action": "3、点击开发者实名认证，跳转开发者实名认证页面，从屏幕最右侧的边上往左快速滑动，返回我的页面",
+          "checkpoint": "3、返回我的工单页面"
+        }
+      ],
+      "expected_result": " ",
+      "postconditions": ""
+    },
+    {
+      "id": "TC_app_alliance_034",
+      "title": "我的，点击应用管理，跳转成功",
+      "level": "L1",
+      "preconditions": "点击联盟app应用，进入我的页面",
+      "test_steps": [
+        {
+          "action": "1、我的，点击应用管理，跳转应用管理页面；",
+          "checkpoint": "1、跳转成功，页面显示文字：今日数据；"
+        },
+        {
+          "action": "2、点击按钮“<”，返回我的页面；",
+          "checkpoint": "2、返回我的页面成功；"
+        },
+        {
+          "action": "3、点击应用管理，跳转应用管理页面，从屏幕最右侧的边上往左快速滑动，返回我的页面",
+          "checkpoint": "3、返回我的页面成功"
+        }
+      ],
+      "expected_result": " ",
+      "postconditions": ""
+    },
+    {
+      "id": "TC_app_alliance_035",
+      "title": "我的，点击远程真机，跳转成功",
+      "level": "L0",
+      "preconditions": "点击联盟app应用，进入我的页面",
+      "test_steps": [
+        {
+          "action": "1、我的，点击远程真机，跳转远程真机页面",
+          "checkpoint": "1、跳转成功，页面显示文字：远程真机，二维码扫码和提示按钮"
+        },
+        {
+          "action": "2、点击二维码扫码，点击返回",
+          "checkpoint": "2、跳转成功，页面显示文字：扫描二维码/条形码"
+        },
+        {
+          "action": "3、点击提示按钮，",
+          "checkpoint": "3、下方弹出弹框，显示文字：温馨提示"
+        },
+        {
+          "action": "4、点击按钮“<”，返回我的页面；",
+          "checkpoint": "4、返回我的页面成功；"
+        },
+        {
+          "action": "5、点击远程真机，跳转远程真机页面，从屏幕最右侧的边上往左快速滑动，返回我的页面",
+          "checkpoint": "5、返回我的页面成功"
+        }
+      ],
+      "expected_result": " ",
+      "postconditions": ""
+    },
+    {
+      "id": "TC_app_alliance_036",
+      "title": "我的，点击设置，跳转成功",
+      "level": "L1",
+      "preconditions": "点击联盟app应用，进入我的页面",
+      "test_steps": [
+        {
+          "action": "1、我的，滑动页面，点击设置，跳转设置页面；",
+          "checkpoint": "1、下方弹出弹框，显示文字：消息通知，业务与隐私的声明，第三方共享信息清单，个人信息收集清单，服务管理，关于，服务协议规则；"
+        },
+        {
+          "action": "2、点击按钮“×”，返回我的页面；",
+          "checkpoint": "2、返回我的页面成功；"
+        },
+        {
+          "action": "3、滑动页面，点击设置，跳转设置页面，从屏幕最右侧的边上往左快速滑动，返回我的页面；",
+          "checkpoint": "3、返回我的页面成功；"
+        },
+        {
+          "action": "4、滑动页面，点击设置，跳转设置页面，顶部下滑页面，返回我的页面",
+          "checkpoint": "4、返回我的页面成功"
+        }
+      ],
+      "expected_result": " ",
+      "postconditions": ""
+    },
+    {
+      "id": "TC_app_alliance_037",
+      "title": "社区，点击右上角搜索按钮，跳转成功",
+      "level": "L0",
+      "preconditions": "点击联盟app应用，进入社区页面",
+      "test_steps": [
+        {
+          "action": "1、社区，点击右上角搜索，跳转搜索页面",
+          "checkpoint": "1、跳转页面显示搜索框；"
+        },
+        {
+          "action": "2、搜索框输入鸿蒙文案，点击搜索按钮，查看搜索内容",
+          "checkpoint": "2、页面数据返回成功，显示文字；"
+        },
+        {
+          "action": "3、点击按钮“<”，返回社区的页面；",
+          "checkpoint": "3、返回我的社区成功；"
+        },
+        {
+          "action": "4、点击右上角搜索，跳转搜索页面，从屏幕最右侧的边上往左快速滑动，返回社区的页面",
+          "checkpoint": "4、返回我的社区成功"
+        }
+      ],
+      "expected_result": " ",
+      "postconditions": ""
+    },
+    {
+      "id": "TC_app_alliance_038",
+      "title": "社区，点击右上角消息按钮，弹框成功",
+      "level": "L1",
+      "preconditions": "点击联盟app应用，进入社区页面",
+      "test_steps": [
+        {
+          "action": "1、社区，点击右上角消息按钮，弹出页面；",
+          "checkpoint": "1、弹出成功，页面显示文字：消息"
+        },
+        {
+          "action": "2、点击按钮“×”，返回社区的页面；",
+          "checkpoint": "2、返回我的社区成功；"
+        },
+        {
+          "action": "3、点击右上角消息按钮，弹出页面，从屏幕最右侧的边上往左快速滑动页面，返回社区的页面；",
+          "checkpoint": "3、返回我的社区成功；"
+        },
+        {
+          "action": "4、点击右上角消息按钮，弹出页面，从弹框顶部下滑页面直到弹框消失，返回社区的页面",
+          "checkpoint": "4、返回我的社区成功"
+        }
+      ],
+      "expected_result": " ",
+      "postconditions": ""
+    },
+    {
+      "id": "TC_app_alliance_039",
+      "title": "社区，点击筛选按钮，弹框成功",
+      "level": "L0",
+      "preconditions": "点击联盟app应用，进入社区页面",
+      "test_steps": [
+        {
+          "action": "1、社区，点击筛选按钮，查看弹框",
+          "checkpoint": "1、弹出成功，页面显示文字：筛选"
+        },
+        {
+          "action": "2、点击按钮“×”，返回社区的页面；",
+          "checkpoint": "2、返回我的社区成功；"
+        },
+        {
+          "action": "3、点击筛选按钮，查看弹框，从屏幕最右侧的边上往左快速滑动，返回社区的页面；",
+          "checkpoint": "3、返回我的社区成功；"
+        }
+      ],
+      "expected_result": " ",
+      "postconditions": ""
+    },
+    {
+      "id": "TC_app_alliance_040",
+      "title": "社区，选择问答，下拉推荐，选择其他项成功",
+      "level": "L0",
+      "preconditions": "点击联盟app应用，进入社区页面",
+      "test_steps": [
+        {
+          "action": "1、社区，选择问答，下拉推荐，查看下拉选项",
+          "checkpoint": "1、下拉选项为：“最热”，“最新”，“已解决”，“未解决”"
+        },
+        {
+          "action": "2、选择“最热”",
+          "checkpoint": "2、切换成功，页面展示内容"
+        },
+        {
+          "action": "3、下拉关注，看下拉选项；",
+          "checkpoint": "3、下拉选项为：“关注的人”，“关注的标签”"
+        },
+        {
+          "action": "4、选择“关注的人”",
+          "checkpoint": "4、切换成功，页面展示内容"
+        },
+        {
+          "action": "5、选择任一问答，查看跳转",
+          "checkpoint": "5、跳转成功，页面展示内容"
+        }
+      ],
+      "expected_result": " ",
+      "postconditions": ""
+    },
+    {
+      "id": "TC_app_alliance_041",
+      "title": "社区，选择话题，页面切换成功",
+      "level": "L0",
+      "preconditions": "点击联盟app应用，进入社区页面",
+      "test_steps": [
+        {
+          "action": "1、社区，选择话题，查看页面切换",
+          "checkpoint": "1、切换成功，页面展示内容"
+        },
+        {
+          "action": "2、点击官方话题后面的更多>，查看跳转",
+          "checkpoint": "2、跳转成功，页面展示文字：官方话题"
+        },
+        {
+          "action": "3、点击官方话题列表页任意一个话题，查看页面跳转",
+          "checkpoint": "3、跳转成功，页面下方展示评论图标、点赞图标、收藏图标"
+        }
+      ],
+      "expected_result": " ",
+      "postconditions": ""
+    },
+    {
+      "id": "TC_app_alliance_042",
+      "title": "社区，点击话题、文章、问题页面切换成功",
+      "level": "L0",
+      "preconditions": "点击联盟app应用，进入社区页面",
+      "test_steps": [
+        {
+          "action": "1、点击文章的tab页，进入到文章页面，点击话题，进入话题页面",
+          "checkpoint": "1、切换成功，页面展示内容"
+        },
+        {
+          "action": "2、点击话题列表页的某个话题，进入话题详情页，点击按钮“<”，返回社区的页面",
+          "checkpoint": "2、返回我的社区成功"
+        }
+      ],
+      "expected_result": " ",
+      "postconditions": ""
+    },
+    {
+      "id": "TC_app_alliance_043",
+      "title": "社区页面，通过左滑右滑，问答、话题、文章页面可以灵活切换",
+      "level": "L1",
+      "preconditions": "点击联盟app应用，进入社区页面",
+      "test_steps": [
+        {
+          "action": "1.进入社区页面后，向左滑动可以切换到话题页面",
+          "checkpoint": "1.切换到话题页面"
+        },
+        {
+          "action": "2.向左滑动可以切换到文章页面",
+          "checkpoint": "2.切换到文章页面"
+        },
+        {
+          "action": "3.向右滑动可以切换到话题页面",
+          "checkpoint": "3.切换到话题页面"
+        }
+      ],
+      "expected_result": " ",
+      "postconditions": ""
+    },
+    {
+      "id": "TC_app_alliance_044",
+      "title": "社区，选择“+”，弹框成功",
+      "level": "L0",
+      "preconditions": "点击联盟app应用，进入社区页面",
+      "test_steps": [
+        {
+          "action": "1、社区，选择“+”，查看弹框",
+          "checkpoint": "1、弹框弹出成功，页面展示文字：提问题，发帖"
+        },
+        {
+          "action": "2、选择“提问题”，查看跳转，返回",
+          "checkpoint": "2、跳转成功，显示文字：提问题，版块，标签"
+        },
+        {
+          "action": "3、选择“+”，选择“发帖”",
+          "checkpoint": "3、跳转成功，显示文字：发帖，版块，标签"
+        }
+      ],
+      "expected_result": " ",
+      "postconditions": ""
+    },
+    {
+      "id": "TC_app_alliance_045",
+      "title": "学习，点击继续学习的更多按钮，跳转成功",
+      "level": "L1",
+      "preconditions": "点击联盟app应用，进入学习页面",
+      "test_steps": [
+        {
+          "action": "1、学习，点击继续学习的右边“>”按钮，查看跳转；",
+          "checkpoint": "1、页面跳转成功，标题为：学习记录"
+        },
+        {
+          "action": "2、点击任意一个学习中的课程",
+          "checkpoint": "2、页面跳转成功，页面显示内容，没有白屏或者黑屏"
+        },
+        {
+          "action": "3、点击右上方的四个点按钮",
+          "checkpoint": "3、弹框弹出成功，页面显示文字：分享"
+        },
+        {
+          "action": "4、点击按钮“×”；",
+          "checkpoint": "4、弹框关闭"
+        }
+      ],
+      "expected_result": " ",
+      "postconditions": ""
+    },
+    {
+      "id": "TC_app_alliance_046",
+      "title": "学习，点击精彩直播的更多按钮，跳转成功",
+      "level": "L1",
+      "preconditions": "点击联盟app应用，进入学习页面",
+      "test_steps": [
+        {
+          "action": "1、学习页面，上滑找到精彩直播，点击精彩直播的右边“>”按钮，查看跳转；",
+          "checkpoint": "1、页面跳转成功，内容显示：直播日历"
+        },
+        {
+          "action": "2、上滑，查看内容展示",
+          "checkpoint": "2、页面展示文字：全部直播，"
+        },
+        {
+          "action": "3、从屏幕最右侧的边上往左快速滑动返回，点击精彩直播下方第一个直播，页面跳转",
+          "checkpoint": "3、页面跳转成功，页面显示内容：课程介绍，用户评价"
+        }
+      ],
+      "expected_result": " ",
+      "postconditions": ""
+    },
+    {
+      "id": "TC_app_alliance_047",
+      "title": "学习页面的精彩直播可查看详细的内容",
+      "level": "L0",
+      "preconditions": "点击联盟app应用，进入学习页面",
+      "test_steps": [
+        {
+          "action": "1.上滑屏幕的一半距离，找到精彩直播，点击任意一张卡片进入直播详情页，可以上滑查看课程内容",
+          "checkpoint": "1.直播详情页展示课程介绍"
+        },
+        {
+          "action": "2.点击右上角的四个点的图标（如果没有找到，屏幕下滑一点后可以看到），弹出分享弹框后，点击弹框右边的按钮“×”；",
+          "checkpoint": "2.弹框关闭"
+        },
+        {
+          "action": "3.上滑页面，查看页面是否有课程介绍",
+          "checkpoint": "3.页面显示文字：课程介绍"
+        },
+        {
+          "action": "4.下滑到顶部，点击左上角的按钮“×”；",
+          "checkpoint": "4.返回学习页面成功"
+        }
+      ],
+      "expected_result": " ",
+      "postconditions": ""
+    },
+    {
+      "id": "TC_app_alliance_048",
+      "title": "学习，点击课程上新的更多按钮，跳转成功",
+      "level": "L0",
+      "preconditions": "点击联盟app应用，进入学习页面",
+      "test_steps": [
+        {
+          "action": "1、学习，上滑屏幕，找到课程上新，点击课程上新的右边“>”按钮，查看跳转；",
+          "checkpoint": "1、页面跳转成功，内容显示：课程分类"
+        },
+        {
+          "action": "2、搜索框输入“提升”，搜索查看内容返回",
+          "checkpoint": "2、页面搜索返回不报错"
+        },
+        {
+          "action": "3、点击“综合排序”，点击“最热”",
+          "checkpoint": "3、页面切换成功，最终停留在最热页面"
+        },
+        {
+          "action": "4、点击搜索框右边的“×”，收起键盘后滑动页面，点击任一一个课程，查看展示的内容",
+          "checkpoint": "4、页面显示文字"
+        },
+        {
+          "action": "5、左滑页面返回上一层，点击按钮“<”返回到学习页面；",
+          "checkpoint": "5、返回学习页面成功"
+        }
+      ],
+      "expected_result": " ",
+      "postconditions": ""
+    },
+    {
+      "id": "TC_app_alliance_049",
+      "title": "学习，点击课程上新内容筛选功能正常",
+      "level": "L1",
+      "preconditions": "点击联盟app应用，进入学习页面",
+      "test_steps": [
+        {
+          "action": "1、学习，上滑屏幕，找到课程上新，点击课程上新的右边“>”按钮，点击筛选按钮，查看弹框展示",
+          "checkpoint": "1、弹框弹出成功，页面显示文字：业务领域，课程类型，按钮“重置”；"
+        },
+        {
+          "action": "2、点击按钮右上角的“×”；",
+          "checkpoint": "2、弹框关闭"
+        }
+      ],
+      "expected_result": " ",
+      "postconditions": ""
+    },
+    {
+      "id": "TC_app_alliance_050",
+      "title": "学习，点击专业认证的更多按钮，跳转成功",
+      "level": "L0",
+      "preconditions": "点击联盟app应用，进入学习页面",
+      "test_steps": [
+        {
+          "action": "1、学习页面，上滑到底部，找到专业认证，点击专业认证的右边“>”按钮，查看跳转；"
+        }
+      ],
+      "expected_result": "1、页面跳转成功，内容显示内容，页面包含：HarmonyOS认证能带来什么",
+      "postconditions": ""
+    },
+    {
+      "id": "TC_app_alliance_051",
+      "title": "学习，查看专业认证下方的HarmonyOS应用开发者基础认证成功",
+      "level": "L0",
+      "preconditions": "点击联盟app应用，进入学习页面",
+      "test_steps": [
+        {
+          "action": "1、学习页面，上滑到底部，找到专业认证，点击专业认证下方的HarmonyOS应用开发者图标",
+          "checkpoint": "1.页面内容包含HarmonyOS应用开发者基础认证"
+        },
+        {
+          "action": "2.点击右上角的四个点图标",
+          "checkpoint": "2.弹出分享弹框"
+        },
+        {
+          "action": "3.点击分享弹框右侧的“x”",
+          "checkpoint": "3.分享弹框消失"
+        }
+      ],
+      "expected_result": " ",
+      "postconditions": ""
+    }
+  ]
+}
